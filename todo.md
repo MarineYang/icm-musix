@@ -11,19 +11,14 @@
 8. **Audition Section** - Call-to-action for online auditions
 9. **Footer** - Contact information, privacy policy, copyright
 
-## Files to Create:
-1. `src/pages/Index.tsx` - Main homepage component
-2. `src/components/Header.tsx` - Navigation header
-3. `src/components/HeroSection.tsx` - Hero banner
-4. `src/components/ArtistsSection.tsx` - Artists showcase
-5. `src/components/MultimediaSection.tsx` - Video/media content
-6. `src/components/ReleasesSection.tsx` - Music releases
-7. `src/components/SocialSection.tsx` - Social media integration
-8. `src/components/Footer.tsx` - Footer component
 
 ## Design Approach:
-- Dark theme with gradient backgrounds
-- Modern typography and spacing
-- Responsive grid layouts
-- Smooth animations and hover effects
-- Korean/English bilingual support consideration
+- Korean/English 버전 
+- HOME 화면의 YOUTUBE 영상 주소 정보.
+- CONTACT US의 이메일, 회사 주소 등의 정보.
+- 도메인 주소 
+- Artists 정보들 알아야함.
+    - 사진, SNS 계정 등
+- Notice / ICM CLOUD 의 DB 사용 및 관리자 페이지 필요 여부.
+- 로고 디자인 사진 필요.
+

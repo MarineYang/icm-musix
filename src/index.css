@@ -96,6 +96,10 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-black text-foreground;
+  }
+  
+  html {
+    @apply bg-black;
   }
 }

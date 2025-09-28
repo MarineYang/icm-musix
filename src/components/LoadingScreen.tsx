@@ -40,7 +40,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
             exit={{ opacity: 0, scale: 1.2 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
+            <h1 className="text-8xl md:text-9xl lg:text-[12rem] font-black text-white leading-tight">
               INSPIRE
               <br />
               COLOURS

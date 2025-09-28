@@ -19,15 +19,12 @@ const queryClient = new QueryClient();
 const pageVariants = {
   initial: {
     opacity: 0,
-    y: 20,
   },
   in: {
     opacity: 1,
-    y: 0,
   },
   out: {
     opacity: 0,
-    y: -20,
   },
 };
 
@@ -41,11 +38,11 @@ function AnimatedRoutes() {
   const location = useLocation();
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-black">
       <Header />
       <ScrollProgress />
       <SocialSidebar />
-      <main className="flex-grow">
+      <main className="flex-grow bg-black">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
           <Route
@@ -57,6 +54,7 @@ function AnimatedRoutes() {
                 exit="out"
                 variants={pageVariants}
                 transition={pageTransition}
+                className="min-h-screen w-full bg-black"
               >
                 <Index />
               </motion.div>
@@ -71,6 +69,7 @@ function AnimatedRoutes() {
                 exit="out"
                 variants={pageVariants}
                 transition={pageTransition}
+                className="min-h-screen w-full bg-black"
               >
                 <About />
               </motion.div>
@@ -85,6 +84,7 @@ function AnimatedRoutes() {
                 exit="out"
                 variants={pageVariants}
                 transition={pageTransition}
+                className="min-h-screen w-full bg-black"
               >
                 <Artist />
               </motion.div>
@@ -99,6 +99,7 @@ function AnimatedRoutes() {
                 exit="out"
                 variants={pageVariants}
                 transition={pageTransition}
+                className="min-h-screen w-full bg-black"
               >
                 <NotFound />
               </motion.div>
@@ -120,18 +121,20 @@ const App = () => {
   };
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        {showLoading ? (
-          <LoadingScreen onComplete={handleLoadingComplete} />
-        ) : (
-          <BrowserRouter>
-            <AnimatedRoutes />
-          </BrowserRouter>
-        )}
-      </TooltipProvider>
-    </QueryClientProvider>
+    <div className="bg-black min-h-screen">
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          {showLoading ? (
+            <LoadingScreen onComplete={handleLoadingComplete} />
+          ) : (
+            <BrowserRouter>
+              <AnimatedRoutes />
+            </BrowserRouter>
+          )}
+        </TooltipProvider>
+      </QueryClientProvider>
+    </div>
   );
 };
 
