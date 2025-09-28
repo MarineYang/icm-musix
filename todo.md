@@ -1,15 +1,13 @@
 # ICM Benchmarked Website - MVP Todo
 
-## Core Features to Implement:
-1. **Header Navigation** - Logo, main menu (COMPANY, ARTIST, MULTIMEDIA, RELEASES, AUDITION), language toggle, social links
-2. **Hero Section** - "REPUBLIC OF PASSION, ICM" with scroll down indicator
-3. **About Section** - Brief company introduction
-4. **Artists Section** - Grid layout showcasing artists with images and names
-5. **Multimedia Section** - Video carousel/grid for music videos and content
-6. **Releases Section** - Latest album/single releases with covers
-7. **Social Media Section** - Instagram-style grid with social handles
-8. **Audition Section** - Call-to-action for online auditions
-9. **Footer** - Contact information, privacy policy, copyright
+## 핵심 기능 구현 목록:
+1. **헤더 네비게이션** - 로고, 메인 메뉴 (ABOUT, ARTIST, NOTICE, ICM CLOUD), 언어 토글 (KOR/ENG), 소셜 링크
+2. **히어로 섹션** - "REPUBLIC OF PASSION, ICM" 메인 비주얼과 스크롤 다운 인디케이터
+3. **회사 소개 섹션** - ICM 뮤직 회사 소개 및 비전
+4. **아티스트 섹션** - 소속 아티스트들의 그리드 레이아웃 (이미지, 이름, SNS 링크)
+6. **공지사항 섹션** - 최신 공지사항 및 뉴스
+8. **ICM 클라우드 섹션** - 클라우드 서비스 소개 및 링크
+9. **푸터** - 연락처 정보, 개인정보처리방침, 저작권 정보
 
 
 ## Design Approach:
@@ -22,3 +20,11 @@
 - Notice / ICM CLOUD 의 DB 사용 및 관리자 페이지 필요 여부.
 - 로고 디자인 사진 필요.
 
+## Admin Page
+- Notice 글쓰기 등록
+- ICM CLOUD 글쓰기 등록
+    - text editor 선택 및 글 내용 어떻게 할 지 정해야함.
+- 메인페이지 배너 / 영상 관리
+- 소셜미디어 피드 연동 관리
+- Artists페이지 아티스트 프로필 수정
+icmICM1234!@#$

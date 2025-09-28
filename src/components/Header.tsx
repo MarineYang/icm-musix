@@ -11,6 +11,10 @@ export default function Header() {
     navigate('/artist');
   };
 
+  const handleIcmCloudClick = () => {
+    navigate('/icm-cloud');
+  };
+
   const handleHomeClick = () => {
     navigate('/');
   };
@@ -50,7 +54,9 @@ export default function Header() {
           <button className="text-white hover:text-gray-300 transition-colors duration-200 text-sm font-medium tracking-wider">
             NOTICE
           </button>
-          <button className="text-white hover:text-gray-300 transition-colors duration-200 text-sm font-medium tracking-wider">
+          <button 
+          onClick={handleIcmCloudClick}
+          className="text-white hover:text-gray-300 transition-colors duration-200 text-sm font-medium tracking-wider">
             ICM CLOUD
           </button>
         </nav>

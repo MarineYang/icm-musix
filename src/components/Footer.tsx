@@ -1,3 +1,5 @@
+import { Youtube, Instagram } from 'lucide-react';
+
 export default function Footer() {
   return (
     <footer className="bg-black text-white">
@@ -18,9 +20,36 @@ export default function Footer() {
             <div>
               <h4 className="text-xl font-bold mb-4">Follow Us</h4>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-300 hover:text-red-500 transition-colors text-2xl">📘</a>
-                <a href="#" className="text-gray-300 hover:text-red-500 transition-colors text-2xl">📺</a>
-                <a href="#" className="text-gray-300 hover:text-red-500 transition-colors text-2xl">📷</a>
+                <a 
+                  href="https://www.youtube.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-red-500 transition-colors"
+                  title="YouTube"
+                >
+                  <Youtube className="w-6 h-6" />
+                </a>
+                <a 
+                  href="https://www.instagram.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-red-500 transition-colors"
+                  title="Instagram"
+                >
+                  <Instagram className="w-6 h-6" />
+                </a>
+                <a 
+                  href="https://www.tiktok.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-red-500 transition-colors"
+                  title="TikTok"
+                >
+                  {/* TikTok 아이콘은 SVG로 직접 구현 */}
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-.88-.05A6.33 6.33 0 0 0 5.76 20.2a6.34 6.34 0 0 0 10.86-4.43V7.83a8.2 8.2 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.8-.26z"/>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>

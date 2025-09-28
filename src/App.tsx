@@ -13,6 +13,9 @@ import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
 import { useState } from 'react';
 import LoadingScreen from './components/LoadingScreen';
+import IcmCloud from './pages/IcmCloud';
+import IcmCloudWrite from './pages/IcmCloudWrite';
+import IcmCloudPost from './pages/IcmCloudPost';
 
 const queryClient = new QueryClient();
 
@@ -90,6 +93,48 @@ function AnimatedRoutes() {
               </motion.div>
             }
           />
+          <Route
+              path="/icm-cloud"
+              element={
+                <motion.div
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                >
+                  <IcmCloud />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/icm-cloud/write"
+              element={
+                <motion.div
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                >
+                  <IcmCloudWrite />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/icm-cloud/post/:id"
+              element={
+                <motion.div
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                >
+                  <IcmCloudPost />
+                </motion.div>
+              }
+            />
           <Route
             path="*"
             element={
