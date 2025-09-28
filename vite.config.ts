@@ -4,7 +4,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: '/icm-musix-app/',  // GitHub repository 이름으로 수정
+  base: './',  // 상대 경로로 변경
   plugins: [
     react(),
   ],
