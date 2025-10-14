@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue-5/HelveticaNeueBold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue-5/HelveticaNeueItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue-5/HelveticaNeueLight.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  * {
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+
 @layer base {
   :root {
     --background: 0 0% 100%;

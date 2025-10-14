@@ -27,4 +27,16 @@
 - 메인페이지 배너 / 영상 관리
 - 소셜미디어 피드 연동 관리
 - Artists페이지 아티스트 프로필 수정
-icmICM1234!@#$
+
+디자인 진행
+
+1. 폰트 
+ - 통일된 폰트
+ - helvetica neue 폰트 적용 
+
+2. Artists detail 뮤비 슬라이드 -> 완료.
+
+3. MUSIX 삭제
+
+4. Notice 는 admin 페이지 만들 때 만들어야함.
+

@@ -30,7 +30,7 @@ export default function Header() {
           onClick={handleHomeClick}
         >
           <div className="text-white text-sm font-bold tracking-wider">
-            ICM MUSIX
+            ICM
           </div>
           <div className="text-gray-400 text-xs tracking-widest mt-1">
             RECORDS

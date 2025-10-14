@@ -16,10 +16,10 @@ export default function SocialSection() {
     <section className="min-h-screen py-20 bg-black flex items-center">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-6xl md:text-7xl font-bold text-white mb-6">FOLLOW ICM MUSIX</h2>
+          <h2 className="text-6xl md:text-7xl font-bold text-white mb-6">FOLLOW ICM</h2>
           <div className="w-32 h-1 bg-red-500 mx-auto mb-8"></div>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Stay connected with our artists and get the latest updates from the ICM MUSIX family
+            Stay connected with our artists and get the latest updates from the ICM family
           </p>  
         </div>
 

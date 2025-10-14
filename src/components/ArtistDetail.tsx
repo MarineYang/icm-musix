@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Youtube, Instagram, Facebook, Twitter } from 'lucide-react';
+import { Youtube, Instagram, Facebook, Twitter, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Artist } from '@/pages/Artist';
 
 interface ArtistDetailProps {
@@ -10,6 +10,7 @@ interface ArtistDetailProps {
 
 export default function ArtistDetail({ artist, onBack }: ArtistDetailProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   // Auto-slide images every 2 seconds
   useEffect(() => {
@@ -21,6 +22,18 @@ export default function ArtistDetail({ artist, onBack }: ArtistDetailProps) {
 
     return () => clearInterval(interval);
   }, [artist.images.length]);
+
+  const videosPerView = 4;
+  const maxVideoIndex = artist.videos ? Math.max(0, artist.videos.length - videosPerView) : 0;
+  const showSlider = artist.videos && artist.videos.length > 4;
+
+  const handlePrevVideo = () => {
+    setCurrentVideoIndex((prev) => Math.max(0, prev - 1));
+  };
+
+  const handleNextVideo = () => {
+    setCurrentVideoIndex((prev) => Math.min(maxVideoIndex, prev + 1));
+  };
 
   const socialIcons = {
     youtube: Youtube,
@@ -45,7 +58,7 @@ export default function ArtistDetail({ artist, onBack }: ArtistDetailProps) {
       </div>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center min-h-screen px-8">
+      <div className="flex items-center justify-center px-8 pt-32 pb-8">
         <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           
           {/* Left Side - Artist Info */}
@@ -134,20 +147,89 @@ export default function ArtistDetail({ artist, onBack }: ArtistDetailProps) {
         </div>
       </div>
 
+      {/* YouTube Videos Section */}
+      {artist.videos && artist.videos.length > 0 && (
+        <div className="w-full bg-black py-8">
+          <div className="max-w-7xl mx-auto px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <div className="relative">
+                {/* Previous Button - Only show if more than 4 videos */}
+                {showSlider && currentVideoIndex > 0 && (
+                  <button
+                    onClick={handlePrevVideo}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 flex items-center justify-center transition-all"
+                  >
+                    <ChevronLeft className="w-6 h-6 text-white" />
+                  </button>
+                )}
+
+                {/* Videos Container */}
+                <div className="overflow-hidden">
+                  <div 
+                    className="flex gap-4 transition-transform duration-500 ease-out"
+                    style={{ 
+                      transform: showSlider ? `translateX(-${currentVideoIndex * (100 / videosPerView)}%)` : 'none'
+                    }}
+                  >
+                    {artist.videos.map((video) => (
+                      <div
+                        key={video.id}
+                        className="flex-shrink-0"
+                        style={{ width: `calc((100% - 3rem) / ${videosPerView})` }}
+                      >
+                        <a
+                          href={`https://www.youtube.com/watch?v=${video.videoId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block group"
+                        >
+                          <div className="relative overflow-hidden rounded-lg bg-gray-900" style={{ aspectRatio: '16/9' }}>
+                            <img
+                              src={video.thumbnail}
+                              alt={video.title}
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <Youtube className="w-12 h-12 text-white" />
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Next Button - Only show if more than 4 videos */}
+                {showSlider && currentVideoIndex < maxVideoIndex && (
+                  <button
+                    onClick={handleNextVideo}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 flex items-center justify-center transition-all"
+                  >
+                    <ChevronRight className="w-6 h-6 text-white" />
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      )}
+      
       {/* Back to List Button */}
-      <motion.div
-        className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-      >
-        <button
+      <div className="w-full flex justify-center py-8">
+        <motion.button
           onClick={onBack}
           className="px-8 py-3 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 font-medium tracking-wider"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
         >
           BACK TO LIST
-        </button>
-      </motion.div>
+        </motion.button>
+      </div>
     </div>
   );
 }

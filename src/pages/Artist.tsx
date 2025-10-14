@@ -15,6 +15,12 @@ export type Artist = {
     twitter?: string;
     weibo?: string;
   };
+  videos: {
+    id: string;
+    title: string;
+    thumbnail: string;
+    videoId: string;
+  }[];
 };
 
 const artists: Artist[] = [
@@ -33,7 +39,45 @@ const artists: Artist[] = [
       facebook: 'https://facebook.com/officialpsy',
       twitter: 'https://twitter.com/psy_oppa',
       weibo: 'https://weibo.com/psyoppa'
-    }
+    },
+    videos: [
+      {
+        id: '1',
+        title: "PSY - GANGNAM STYLE(강남스타일) M/V",
+        thumbnail: "https://img.youtube.com/vi/9bZkp7q19f0/maxresdefault.jpg",
+        videoId: "9bZkp7q19f0"
+      },
+      {
+        id: '2',
+        title: "PSY - GENTLEMAN M/V",
+        thumbnail: "https://img.youtube.com/vi/ASO_ypdHDuk/maxresdefault.jpg",
+        videoId: "ASO_ypdHDuk"
+      },
+      {
+        id: '3',
+        title: "PSY - DADDY(feat. CL of 2NE1) M/V",
+        thumbnail: "https://img.youtube.com/vi/HkMNOlYcpHg/maxresdefault.jpg",
+        videoId: "HkMNOlYcpHg"
+      },
+      {
+        id: '4',
+        title: "PSY - New Face M/V",
+        thumbnail: "https://img.youtube.com/vi/CH1XGdu-hzQ/maxresdefault.jpg",
+        videoId: "CH1XGdu-hzQ"
+      },
+      {
+        id: '5',
+        title: "PSY - New Face M/V",
+        thumbnail: "https://img.youtube.com/vi/CH1XGdu-hzQ/maxresdefault.jpg",
+        videoId: "CH1XGdu-hzQ"
+      },
+      {
+        id: '6',
+        title: "PSY - New Face M/V",
+        thumbnail: "https://img.youtube.com/vi/CH1XGdu-hzQ/maxresdefault.jpg",
+        videoId: "CH1XGdu-hzQ"
+      }
+    ]
   },
   {
     id: 'crush',
@@ -49,7 +93,33 @@ const artists: Artist[] = [
       instagram: 'https://instagram.com/crush9244',
       facebook: 'https://facebook.com/crush9244',
       twitter: 'https://twitter.com/crush9244'
-    }
+    },
+    videos: [
+      {
+        id: '1',
+        title: "Crush - 'Beautiful' Official MV",
+        thumbnail: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop",
+        videoId: "dQw4w9WgXcQ"
+      },
+      {
+        id: '2',
+        title: "Crush - 'Rush Hour' Official MV",
+        thumbnail: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=400&fit=crop",
+        videoId: "dQw4w9WgXcQ"
+      },
+      {
+        id: '3',
+        title: "Crush - 'NAPPA' Official MV",
+        thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop",
+        videoId: "dQw4w9WgXcQ"
+      },
+      {
+        id: '4',
+        title: "Crush - 'Lay Your Head On Me' Official MV",
+        thumbnail: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&h=400&fit=crop",
+        videoId: "dQw4w9WgXcQ"
+      }
+    ]
   },
   {
     id: 'bignaughty',
@@ -64,7 +134,27 @@ const artists: Artist[] = [
       youtube: 'https://youtube.com/@bignaughty',
       instagram: 'https://instagram.com/bignaughty',
       facebook: 'https://facebook.com/bignaughty'
-    }
+    },
+    videos: [
+      {
+        id: '1',
+        title: "BIG Naughty - 'Joker' Official MV",
+        thumbnail: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop",
+        videoId: "dQw4w9WgXcQ"
+      },
+      {
+        id: '2',
+        title: "BIG Naughty - 'Vancouver 2' Official MV",
+        thumbnail: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=400&fit=crop",
+        videoId: "dQw4w9WgXcQ"
+      },
+      {
+        id: '3',
+        title: "BIG Naughty - 'Bucket List' Official MV",
+        thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop",
+        videoId: "dQw4w9WgXcQ"
+      }
+    ]
   },
   {
     id: 'ph1',
@@ -79,7 +169,27 @@ const artists: Artist[] = [
       youtube: 'https://youtube.com/@ph1official',
       instagram: 'https://instagram.com/ph1boyyy',
       twitter: 'https://twitter.com/ph1boyyy'
-    }
+    },
+    videos: [
+      {
+        id: '1',
+        title: "pH-1 - 'NERDY LOVE' Official MV",
+        thumbnail: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop",
+        videoId: "dQw4w9WgXcQ"
+      },
+      {
+        id: '2',
+        title: "pH-1 - 'PACKITUP!' Official MV",
+        thumbnail: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=400&fit=crop",
+        videoId: "dQw4w9WgXcQ"
+      },
+      {
+        id: '3',
+        title: "pH-1 - 'HATE YOU' Official MV",
+        thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop",
+        videoId: "dQw4w9WgXcQ"
+      }
+    ]
   }
 ];
 
