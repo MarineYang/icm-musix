@@ -24,7 +24,7 @@ npx supabase start
 ## 4. 로컬 Supabase 정보
 
 ### 서비스 URL
-- **API URL**: http://127.0.0.1:54321
+- **API URL**: http://127.0.0.1:33000
 - **Database URL**: postgresql://postgres:postgres@127.0.0.1:54322/postgres
 - **Studio URL (Admin Dashboard)**: http://127.0.0.1:54323
 
@@ -37,7 +37,7 @@ npx supabase start
 
 ```env
 # Supabase Local Development
-VITE_SUPABASE_URL=http://127.0.0.1:54321
+VITE_SUPABASE_URL=http://127.0.0.1:33000
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
 ```
 

@@ -51,7 +51,7 @@ pnpm install
 pnpm dev
 ```
 
-브라우저에서 `http://localhost:5173`으로 접속하세요.
+브라우저에서 `http://localhost:33000`으로 접속하세요.
 
 ### 3. 빌드
 

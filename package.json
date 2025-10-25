@@ -1,5 +1,5 @@
 {
-  "name": "shadcnui",
+  "name": "icm-musix",
   "type": "module",
   "packageManager": "pnpm@8.10.0",
   "homepage": "https://MarineYang.github.io/icm-musix/",
@@ -78,6 +78,7 @@
     "@metagptx/vite-plugin-source-locator": "latest",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/typography": "^0.5.15",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.5.5",
     "@types/react": "^19.1.11",
     "@types/react-dom": "^19.1.8",

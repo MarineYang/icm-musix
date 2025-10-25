@@ -75,7 +75,6 @@ export default function ArtistPage() {
               instagram: artist.instagram_url || undefined,
               facebook: artist.facebook_url || undefined,
               twitter: artist.twitter_url || undefined,
-              weibo: artist.weibo_url || undefined,
             },
             videos: (videosData || []).map((video: ArtistVideo) => ({
               id: video.id.toString(),

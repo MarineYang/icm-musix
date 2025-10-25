@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-// 환경 변수로 설정 (개발/프로덕션 환경 분리)
+// Vite에서는 import.meta.env를 사용하여 .env 파일을 읽습니다
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'http://127.0.0.1:54321'
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0'
 
@@ -97,4 +97,23 @@ export type ArtistVideo = {
   thumbnail_url: string | null
   display_order: number
   created_at: string
+}
+
+export type Admin = {
+  uid: string
+  id: string
+  password: string
+  token: string | null
+  expires_at: string | null
+  created_at: string
+}
+
+export type SocialLink = {
+  id: number
+  platform: 'instagram' | 'youtube'| 'twitter' | 'facebook' | 'tiktok'
+  url: string
+  is_active: boolean
+  display_order: number
+  created_at: string
+  updated_at: string
 }
