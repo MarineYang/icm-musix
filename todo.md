@@ -32,11 +32,21 @@
 
 1. 폰트 
  - 통일된 폰트
- - helvetica neue 폰트 적용 
+ - helvetica neue 폰트 적용 -> 완료.
 
 2. Artists detail 뮤비 슬라이드 -> 완료.
 
-3. MUSIX 삭제
+3. MUSIX 삭제 -> 완료.
 
 4. Notice 는 admin 페이지 만들 때 만들어야함.
 
+5. 카페 24 퀵 스타트업 Pro로 호스팅
+
+6. 인스타 계정은 api를 이용해야하는데 제한이 있으니 admin 페이지에서 관리 하도록 하자.
+
+7. Notice 페이지 준비중 작업완료
+
+8. 데이터셋 완료.
+    - 홈 화면 Youtube 영상
+    - 홈 화면 인스타 계정
+    - Artists 정보들 전부.

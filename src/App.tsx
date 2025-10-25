@@ -16,6 +16,7 @@ import LoadingScreen from './components/LoadingScreen';
 import IcmCloud from './pages/IcmCloud';
 import IcmCloudWrite from './pages/IcmCloudWrite';
 import IcmCloudPost from './pages/IcmCloudPost';
+import Notice from './pages/Notice';
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,21 @@ function AnimatedRoutes() {
                 className="min-h-screen w-full bg-black"
               >
                 <Artist />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/notice"
+            element={
+              <motion.div
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariants}
+                transition={pageTransition}
+                className="min-h-screen w-full bg-black"
+              >
+                <Notice />
               </motion.div>
             }
           />

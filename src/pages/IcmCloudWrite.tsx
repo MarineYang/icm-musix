@@ -26,7 +26,7 @@ export default function IcmCloudWrite() {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('app_700f7ffff6_posts')
+        .from('posts')
         .insert([
           {
             title: formData.title,

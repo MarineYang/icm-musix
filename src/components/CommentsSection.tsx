@@ -37,7 +37,7 @@ export default function CommentsSection({ postId, initialLikes = 0, initialComme
       
       console.log("Comments postId : ", postId);
       const { data, error } = await supabase
-        .from('app_700f7ffff6_comments')
+        .from('comments')
         .select('*')
         .eq('post_id', postId)
         .order('created_at', { ascending: true });
@@ -67,7 +67,7 @@ export default function CommentsSection({ postId, initialLikes = 0, initialComme
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('app_700f7ffff6_comments')
+        .from('comments')
         .insert([
           {
             post_id: postId,
@@ -102,7 +102,7 @@ export default function CommentsSection({ postId, initialLikes = 0, initialComme
   const handleLike = async () => {
     try {
       const { error } = await supabase
-        .from('app_700f7ffff6_posts')
+        .from('posts')
         .update({ like_count: likes + 1 })
         .eq('id', postId);
 

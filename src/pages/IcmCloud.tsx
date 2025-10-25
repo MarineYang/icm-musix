@@ -23,7 +23,7 @@ export default function IcmCloud() {
     setLoading(true);
     try {
       let query = supabase
-        .from('app_700f7ffff6_posts')
+        .from('posts')
         .select('*', { count: 'exact' })
         .order('created_at', { ascending: false })
         .range((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE - 1);

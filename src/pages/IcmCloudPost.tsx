@@ -32,7 +32,7 @@ export default function IcmCloudPost() {
 
       // 게시글 정보 가져오기
       const { data, error } = await supabase
-        .from('app_700f7ffff6_posts')
+        .from('posts')
         .select('*')
         .eq('id', id)
         .single();

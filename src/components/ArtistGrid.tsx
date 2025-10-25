@@ -3,10 +3,10 @@ import { Artist } from '@/pages/Artist';
 
 interface ArtistGridProps {
   artists: Artist[];
-  onArtistSelect: (artist: Artist) => void;
+  onSelectArtist: (artist: Artist) => void;
 }
 
-export default function ArtistGrid({ artists, onArtistSelect }: ArtistGridProps) {
+export default function ArtistGrid({ artists, onSelectArtist }: ArtistGridProps) {
   return (
     <div className="min-h-screen bg-black text-white px-8 py-20">
       {/* Header */}
@@ -35,7 +35,7 @@ export default function ArtistGrid({ artists, onArtistSelect }: ArtistGridProps)
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
               whileHover={{ scale: 1.05 }}
-              onClick={() => onArtistSelect(artist)}
+              onClick={() => onSelectArtist(artist)}
             >
               {/* Artist Card */}
               <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-[3/4] mb-6">

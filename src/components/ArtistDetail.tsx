@@ -5,10 +5,10 @@ import { Artist } from '@/pages/Artist';
 
 interface ArtistDetailProps {
   artist: Artist;
-  onBack: () => void;
+  onClose: () => void;
 }
 
-export default function ArtistDetail({ artist, onBack }: ArtistDetailProps) {
+export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
@@ -221,7 +221,7 @@ export default function ArtistDetail({ artist, onBack }: ArtistDetailProps) {
       {/* Back to List Button */}
       <div className="w-full flex justify-center py-8">
         <motion.button
-          onClick={onBack}
+          onClick={onClose}
           className="px-8 py-3 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 font-medium tracking-wider"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

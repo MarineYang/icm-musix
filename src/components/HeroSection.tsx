@@ -1,31 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-const musicVideos = [
-  {
-    id: 'jWQx2f-CErU',
-    title: 'Latest Music Video',
-    thumbnail: 'https://img.youtube.com/vi/jWQx2f-CErU/maxresdefault.jpg'
-  },
-  {
-    id: 'dQw4w9WgXcQ',
-    title: 'Music Video 2',
-    thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg'
-  },
-  {
-    id: 'L_jWHffIx5E',
-    title: 'Music Video 3',
-    thumbnail: 'https://img.youtube.com/vi/L_jWHffIx5E/maxresdefault.jpg'
-  },
-  {
-    id: 'kJQP7kiw5Fk',
-    title: 'Music Video 4',
-    thumbnail: 'https://img.youtube.com/vi/kJQP7kiw5Fk/maxresdefault.jpg'
-  }
-];
+import { supabase, YoutubeVideo } from '@/lib/supabase';
 
 export default function HeroSection() {
+  const [musicVideos, setMusicVideos] = useState<YoutubeVideo[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentVideo, setCurrentVideo] = useState(0);
+
+  // Supabase에서 YouTube 비디오 가져오기
+  useEffect(() => {
+    fetchYoutubeVideos();
+  }, []);
+
+  const fetchYoutubeVideos = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('youtube_videos')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching youtube videos:', error);
+        return;
+      }
+
+      setMusicVideos(data || []);
+    } catch (error) {
+      console.error('Error fetching youtube videos:', error);
+    }
+    setLoading(false);
+  };
 
   const nextVideo = () => {
     setCurrentVideo((prev) => (prev + 1) % musicVideos.length);
@@ -36,15 +41,25 @@ export default function HeroSection() {
   };
 
   const goToYouTube = () => {
-    window.open(`https://www.youtube.com/watch?v=${musicVideos[currentVideo].id}`, '_blank');
+    if (musicVideos[currentVideo]) {
+      window.open(`https://www.youtube.com/watch?v=${musicVideos[currentVideo].video_id}`, '_blank');
+    }
   };
+
+  if (loading || musicVideos.length === 0) {
+    return (
+      <section className="relative min-h-screen overflow-hidden bg-black flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative min-h-screen overflow-hidden">
       {/* Background Video */}
       <div className="absolute inset-0 w-full h-full">
         <iframe
-          src={`https://www.youtube.com/embed/${musicVideos[currentVideo].id}?autoplay=1&mute=1&loop=1&playlist=${musicVideos[currentVideo].id}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=1`}
+          src={`https://www.youtube.com/embed/${musicVideos[currentVideo].video_id}?autoplay=1&mute=1&loop=1&playlist=${musicVideos[currentVideo].video_id}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=1`}
           className="w-full h-full object-cover scale-110"
           style={{ 
             minWidth: '100vw', 
@@ -91,7 +106,7 @@ export default function HeroSection() {
                   onClick={() => setCurrentVideo(index)}
                 >
                   <img
-                    src={video.thumbnail}
+                    src={video.thumbnail_url || `https://img.youtube.com/vi/${video.video_id}/maxresdefault.jpg`}
                     alt={video.title}
                     className="w-16 h-12 object-cover rounded-lg"
                   />
