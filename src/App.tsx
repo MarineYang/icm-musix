@@ -1,7 +1,7 @@
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Index from './pages/Index';
 import About from './pages/About';
@@ -17,6 +17,11 @@ import IcmCloud from './pages/IcmCloud';
 import IcmCloudWrite from './pages/IcmCloudWrite';
 import IcmCloudPost from './pages/IcmCloudPost';
 import Notice from './pages/Notice';
+// Admin pages
+import AdminLogin from './pages/admin/Login';
+import AdminDashboard from './pages/admin/Dashboard';
+import AdminContent from './pages/admin/Content';
+import AdminSettings from './pages/admin/Settings';
 
 const queryClient = new QueryClient();
 
@@ -38,14 +43,28 @@ const pageTransition = {
   duration: 0.4,
 };
 
+// Protected Route Component for Admin
+const ProtectedAdminRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = localStorage.getItem('admin_token') === 'valid';
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
 function AnimatedRoutes() {
   const location = useLocation();
+  
+  // Admin 페이지는 Header/Footer 없이 표시
+  const isAdminPage = location.pathname.startsWith('/admin');
 
   return (
     <div className="flex flex-col min-h-screen bg-black">
-      <Header />
-      <ScrollProgress />
-      <SocialSidebar />
+      {!isAdminPage && <Header />}
+      {!isAdminPage && <ScrollProgress />}
+      {!isAdminPage && <SocialSidebar />}
       <main className="flex-grow bg-black">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
@@ -151,6 +170,34 @@ function AnimatedRoutes() {
                 </motion.div>
               }
             />
+
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboard />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/content"
+            element={
+              <ProtectedAdminRoute>
+                <AdminContent />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedAdminRoute>
+                <AdminSettings />
+              </ProtectedAdminRoute>
+            }
+          />
+
           <Route
             path="*"
             element={
@@ -169,7 +216,7 @@ function AnimatedRoutes() {
         </Routes>
       </AnimatePresence>
       </main>
-      <Footer />
+      {!isAdminPage && <Footer />}
     </div>
   );
 }
