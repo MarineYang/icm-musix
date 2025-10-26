@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Save, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import SimpleQuillEditor from '@/components/SimpleQuillEditor';
+import RichTextEditor from '@/components/RichTextEditor';
 
 export default function IcmCloudWrite() {
   const [formData, setFormData] = useState({
@@ -119,7 +119,7 @@ export default function IcmCloudWrite() {
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-300">내용</label>
             
-            <SimpleQuillEditor
+            <RichTextEditor
               value={formData.content}
               onChange={(content) => setFormData(prev => ({ ...prev, content }))}
               placeholder="내용을 입력해주세요..."

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Eye, Calendar } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import CommentsSection from '@/components/CommentsSection';
+import DOMPurify from 'dompurify';
 
 interface Post {
   id: number;
@@ -65,6 +66,7 @@ export default function IcmCloudPost() {
 
   useEffect(() => {
     fetchPost();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (loading) {
@@ -131,10 +133,132 @@ export default function IcmCloudPost() {
 
           {/* 게시글 내용 */}
           <div className="prose prose-invert max-w-none">
-            <div className="text-gray-300 whitespace-pre-wrap leading-relaxed">
-              {post.content}
-            </div>
+            <div 
+              className="text-gray-300 leading-relaxed rich-text-content"
+              dangerouslySetInnerHTML={{ 
+                __html: DOMPurify.sanitize(post.content, {
+                  ADD_TAGS: ['iframe'],
+                  ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
+                })
+              }}
+            />
           </div>
+          
+          {/* 리치 텍스트 콘텐츠 스타일 */}
+          <style>{`
+            .rich-text-content h1 {
+              font-size: 2em;
+              font-weight: bold;
+              margin: 0.67em 0;
+              color: white;
+            }
+
+            .rich-text-content h2 {
+              font-size: 1.5em;
+              font-weight: bold;
+              margin: 0.75em 0;
+              color: white;
+            }
+
+            .rich-text-content h3 {
+              font-size: 1.17em;
+              font-weight: bold;
+              margin: 0.83em 0;
+              color: white;
+            }
+
+            .rich-text-content p {
+              margin: 1em 0;
+              line-height: 1.6;
+            }
+
+            .rich-text-content ul,
+            .rich-text-content ol {
+              padding-left: 1.5rem;
+              margin: 1rem 0;
+            }
+
+            .rich-text-content ul {
+              list-style-type: disc;
+            }
+
+            .rich-text-content ol {
+              list-style-type: decimal;
+            }
+
+            .rich-text-content li {
+              margin: 0.5em 0;
+            }
+
+            .rich-text-content blockquote {
+              border-left: 4px solid #4b5563;
+              padding-left: 1rem;
+              margin: 1rem 0;
+              color: #9ca3af;
+            }
+
+            .rich-text-content code {
+              background-color: #1f2937;
+              padding: 0.2em 0.4em;
+              border-radius: 0.25rem;
+              font-size: 0.875em;
+              color: #f472b6;
+              font-family: 'Courier New', monospace;
+            }
+
+            .rich-text-content pre {
+              background: #111827;
+              border-radius: 0.5rem;
+              padding: 1rem;
+              margin: 1rem 0;
+              overflow-x: auto;
+            }
+
+            .rich-text-content pre code {
+              background: none;
+              color: #e5e7eb;
+              padding: 0;
+              font-size: 0.875rem;
+            }
+
+            .rich-text-content img {
+              max-width: 100%;
+              height: auto;
+              border-radius: 0.5rem;
+              margin: 1rem 0;
+            }
+
+            .rich-text-content a {
+              color: #60a5fa;
+              text-decoration: underline;
+            }
+
+            .rich-text-content a:hover {
+              color: #93c5fd;
+            }
+
+            .rich-text-content strong {
+              font-weight: bold;
+            }
+
+            .rich-text-content em {
+              font-style: italic;
+            }
+
+            .rich-text-content u {
+              text-decoration: underline;
+            }
+
+            .rich-text-content s {
+              text-decoration: line-through;
+            }
+
+            .rich-text-content iframe {
+              max-width: 100%;
+              border-radius: 0.5rem;
+              margin: 1rem 0;
+            }
+          `}</style>
 
           {/* 댓글 섹션 */}
           <CommentsSection 

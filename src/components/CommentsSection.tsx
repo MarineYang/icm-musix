@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { MessageCircle, Heart, Share2, ChevronUp, ChevronDown } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
@@ -29,10 +29,12 @@ export default function CommentsSection({ postId, initialLikes = 0, initialComme
   });
   const [showComments, setShowComments] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
 
   // 댓글 목록 불러오기
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       
       console.log("Comments postId : ", postId);
@@ -53,7 +55,7 @@ export default function CommentsSection({ postId, initialLikes = 0, initialComme
     } catch (error) {
       console.error('Error fetching comments:', error);
     }
-  };
+  }, [postId]);
 
   // 댓글 작성
   const handleSubmitComment = async (e: React.FormEvent) => {
@@ -98,8 +100,24 @@ export default function CommentsSection({ postId, initialLikes = 0, initialComme
     setLoading(false);
   };
 
+  // 좋아요 상태 확인 (localStorage 사용)
+  const checkLikeStatus = useCallback(() => {
+    const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+    setIsLiked(likedPosts.includes(postId));
+  }, [postId]);
+
   // 좋아요 처리
   const handleLike = async () => {
+    // 이미 좋아요를 눌렀는지 확인
+    if (isLiked) {
+      alert('이미 좋아요를 누르셨습니다!');
+      return;
+    }
+
+    // 애니메이션 시작
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 600);
+
     try {
       const { error } = await supabase
         .from('posts')
@@ -108,9 +126,16 @@ export default function CommentsSection({ postId, initialLikes = 0, initialComme
 
       if (!error) {
         setLikes(likes + 1);
+        setIsLiked(true);
+        
+        // localStorage에 좋아요 기록 저장
+        const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+        likedPosts.push(postId);
+        localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
       }
     } catch (error) {
       console.error('Error updating likes:', error);
+      setIsAnimating(false);
     }
   };
 
@@ -131,24 +156,42 @@ export default function CommentsSection({ postId, initialLikes = 0, initialComme
     if (showComments) {
       fetchComments();
     }
-  }, [postId, showComments]);
+  }, [postId, showComments, fetchComments]);
 
-  // 컴포넌트 마운트 시 자동으로 댓글 표시
+  // 컴포넌트 마운트 시 자동으로 댓글 표시 및 좋아요 상태 확인
   useEffect(() => {
     setShowComments(true);
-  }, []);
+    checkLikeStatus();
+  }, [postId, checkLikeStatus]);
 
   return (
     <div className="w-full bg-black text-white">
       {/* 좋아요 및 댓글 카운터 */}
       <div className="flex items-center space-x-6 py-4 border-b border-gray-800">
-        <button
+        <motion.button
           onClick={handleLike}
-          className="flex items-center space-x-2 text-gray-400 hover:text-red-400 transition-colors"
+          className={`flex items-center space-x-2 transition-colors ${
+            isLiked 
+              ? 'text-red-500' 
+              : 'text-gray-400 hover:text-red-400'
+          }`}
+          whileTap={{ scale: 0.9 }}
         >
-          <Heart className="w-5 h-5" />
-          <span>{likes}</span>
-        </button>
+          <motion.div
+            animate={isAnimating ? {
+              scale: [1, 1.5, 1],
+              rotate: [0, -10, 10, -10, 0]
+            } : {}}
+            transition={{ duration: 0.6 }}
+          >
+            {isLiked ? (
+              <Heart className="w-5 h-5 fill-current" />
+            ) : (
+              <Heart className="w-5 h-5" />
+            )}
+          </motion.div>
+          <span className="font-medium">{likes}</span>
+        </motion.button>
         
         <button
           onClick={() => {}}
