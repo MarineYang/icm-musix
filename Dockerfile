@@ -8,8 +8,8 @@ WORKDIR /app
 # 의존성 파일 복사
 COPY package*.json ./
 
-# 의존성 설치
-RUN npm ci --only=production
+# 의존성 설치 (devDependencies 포함 - 빌드에 필요)
+RUN npm ci
 
 # 소스 코드 복사
 COPY . .
