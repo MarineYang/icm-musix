@@ -11,7 +11,7 @@ services:
         VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
     container_name: icm-musix-frontend
     ports:
-      - "80:80"
+      - "127.0.0.1:33000:80"  # 로컬에서만 33000 포트로 접근, 호스트 Nginx가 리버스 프록시
     networks:
       - icm-network
     restart: unless-stopped
