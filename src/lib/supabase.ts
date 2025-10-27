@@ -74,7 +74,6 @@ export type Artist = {
   instagram_url: string | null
   facebook_url: string | null
   twitter_url: string | null
-  weibo_url: string | null
   display_order: number
   is_active: boolean
   created_at: string
@@ -110,7 +109,7 @@ export type Admin = {
 
 export type SocialLink = {
   id: number
-  platform: 'instagram' | 'youtube'| 'twitter' | 'facebook' | 'tiktok'
+  platform: 'instagram' | 'youtube'| 'twitter' | 'facebook' | 'tiktok' | 'website'
   url: string
   is_active: boolean
   display_order: number

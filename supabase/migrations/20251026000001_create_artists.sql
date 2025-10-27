@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS artists (
   instagram_url TEXT,
   facebook_url TEXT,
   twitter_url TEXT,
-  weibo_url TEXT,
   display_order INTEGER DEFAULT 0,
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -128,11 +127,11 @@ CREATE POLICY "Allow public delete access to artist_videos"
   USING (true);
 
 -- Insert sample artists data
-INSERT INTO artists (id, name, description, profile_image, youtube_url, instagram_url, facebook_url, twitter_url, weibo_url, display_order, is_active) VALUES
-  ('psy', 'PSY', 'Go Crazy or Go Home', '/workspace/uploads/image (4).png', 'https://youtube.com/@psy', 'https://instagram.com/42psy42', 'https://facebook.com/officialpsy', 'https://twitter.com/psy_oppa', 'https://weibo.com/psyoppa', 1, true),
-  ('crush', 'CRUSH', 'R&B Soul Master', '/workspace/uploads/image (4).png', 'https://youtube.com/@crush', 'https://instagram.com/crush9244', 'https://facebook.com/crush9244', 'https://twitter.com/crush9244', NULL, 2, true),
-  ('bignaughty', 'BIG Naughty', 'Hip-hop Rising Star', '/workspace/uploads/image (4).png', 'https://youtube.com/@bignaughty', 'https://instagram.com/bignaughty', 'https://facebook.com/bignaughty', NULL, NULL, 3, true),
-  ('ph1', 'pH-1', 'Korean-American Rapper', '/workspace/uploads/image (4).png', 'https://youtube.com/@ph1official', 'https://instagram.com/ph1boyyy', NULL, 'https://twitter.com/ph1boyyy', NULL, 4, true);
+INSERT INTO artists (id, name, description, profile_image, youtube_url, instagram_url, facebook_url, twitter_url, display_order, is_active) VALUES
+  ('psy', 'PSY', 'Go Crazy or Go Home', '/workspace/uploads/image (4).png', 'https://youtube.com/@psy', 'https://instagram.com/42psy42', 'https://facebook.com/officialpsy', 'https://twitter.com/psy_oppa', 1, true),
+  ('crush', 'CRUSH', 'R&B Soul Master', '/workspace/uploads/image (4).png', 'https://youtube.com/@crush', 'https://instagram.com/crush9244', 'https://facebook.com/crush9244', 'https://twitter.com/crush9244', 2, true),
+  ('bignaughty', 'BIG Naughty', 'Hip-hop Rising Star', '/workspace/uploads/image (4).png', 'https://youtube.com/@bignaughty', 'https://instagram.com/bignaughty', 'https://facebook.com/bignaughty', NULL, 3, true),
+  ('ph1', 'pH-1', 'Korean-American Rapper', '/workspace/uploads/image (4).png', 'https://youtube.com/@ph1official', 'https://instagram.com/ph1boyyy', NULL, 'https://twitter.com/ph1boyyy', 4, true);
 
 -- Insert artist images
 INSERT INTO artist_images (artist_id, image_url, display_order) VALUES

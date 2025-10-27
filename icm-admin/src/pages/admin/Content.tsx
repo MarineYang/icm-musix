@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import Sidebar from '@/components/admin/Sidebar';
 import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog';
 import { Post, Artist, YoutubeVideo, InstagramAccount, SocialLink } from '@/types';
-import { Trash2, Edit, Plus, Search, Instagram, Youtube, Twitter, Facebook } from 'lucide-react';
+import { Trash2, Edit, Plus, Search, Instagram, Youtube, Twitter, Facebook, Globe } from 'lucide-react';
 
 export default function Content() {
   const [activeTab, setActiveTab] = useState('posts');
@@ -444,6 +444,8 @@ export default function Content() {
         return <Twitter className="h-4 w-4" />;
       case 'facebook':
         return <Facebook className="h-4 w-4" />;
+      case 'website':
+        return <Globe className="h-4 w-4" />;
       default:
         return null;
     }
@@ -461,6 +463,8 @@ export default function Content() {
         return 'bg-indigo-100 text-indigo-800';
       case 'tiktok':
         return 'bg-purple-100 text-purple-800';
+      case 'website':
+        return 'bg-green-100 text-green-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -1074,6 +1078,7 @@ export default function Content() {
                             <SelectItem value="twitter">Twitter</SelectItem>
                             <SelectItem value="facebook">Facebook</SelectItem>
                             <SelectItem value="tiktok">TikTok</SelectItem>
+                            <SelectItem value="website">Website (자사 사이트)</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>

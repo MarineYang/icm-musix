@@ -60,7 +60,6 @@ export interface Artist {
   instagram_url?: string;
   facebook_url?: string;
   twitter_url?: string;
-  weibo_url?: string;
   display_order: number;
   is_active: boolean;
   created_at: string;
@@ -87,7 +86,7 @@ export interface ArtistVideo {
 
 export interface SocialLink {
   id: number;
-  platform: 'instagram' | 'youtube' | 'twitter' | 'facebook' | 'tiktok' | 'weibo';
+  platform: 'instagram' | 'youtube' | 'twitter' | 'facebook' | 'tiktok' | 'website';
   url: string;
   is_active: boolean;
   display_order: number;

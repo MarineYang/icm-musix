@@ -1,4 +1,4 @@
-import { Instagram, Youtube, Twitter, Facebook } from 'lucide-react';
+import { Instagram, Youtube, Twitter, Facebook, Globe } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase, SocialLink } from '@/lib/supabase';
 
@@ -43,6 +43,8 @@ export default function SocialSidebar() {
         return <Twitter {...iconProps} />;
       case 'facebook':
         return <Facebook {...iconProps} />;
+      case 'website':
+        return <Globe {...iconProps} />;
       case 'tiktok':
         return (
           <svg {...iconProps} viewBox="0 0 24 24" fill="currentColor">

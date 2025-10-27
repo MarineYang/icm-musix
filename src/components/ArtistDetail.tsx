@@ -40,12 +40,6 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
     instagram: Instagram,
     facebook: Facebook,
     twitter: Twitter,
-    weibo: () => (
-      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M9.31 8.17c-.36 0-.69.29-.69.65 0 .36.33.65.69.65.36 0 .69-.29.69-.65 0-.36-.33-.65-.69-.65zm2.54 2.05c-.14 0-.25.11-.25.25s.11.25.25.25.25-.11.25-.25-.11-.25-.25-.25z"/>
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.5 12.5c0 1.93-2.13 3.5-4.75 3.5s-4.75-1.57-4.75-3.5c0-1.93 2.13-3.5 4.75-3.5s4.75 1.57 4.75 3.5z"/>
-      </svg>
-    )
   };
 
   return (

@@ -14,7 +14,6 @@ export type Artist = {
     instagram?: string;
     facebook?: string;
     twitter?: string;
-    weibo?: string;
   };
   videos: {
     id: string;

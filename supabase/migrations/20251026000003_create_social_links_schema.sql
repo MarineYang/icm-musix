@@ -1,7 +1,7 @@
 -- 소셜 미디어 링크 설정 테이블 생성
 CREATE TABLE IF NOT EXISTS public.social_links (
   id SERIAL PRIMARY KEY,
-  platform VARCHAR(50) NOT NULL CHECK (platform IN ('instagram', 'youtube', 'twitter', 'facebook', 'tiktok')),
+  platform VARCHAR(50) NOT NULL CHECK (platform IN ('instagram', 'youtube', 'twitter', 'facebook', 'tiktok', 'website')),
   url VARCHAR(500) NOT NULL,
   is_active BOOLEAN DEFAULT true,
   display_order INTEGER DEFAULT 0,
