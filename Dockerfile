@@ -28,7 +28,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Nginx 설정 파일 복사
-COPY nginx-docker.conf /etc/nginx/conf.d/default.conf
+COPY nginx-reverse-proxy.conf /etc/nginx/conf.d/default.conf
 
 # 빌드된 파일 복사
 COPY --from=builder /app/dist /usr/share/nginx/html
