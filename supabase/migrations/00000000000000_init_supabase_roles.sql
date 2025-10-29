@@ -22,31 +22,31 @@ BEGIN
 
   -- authenticator 사용자 생성 (PostgREST용)
   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'authenticator') THEN
-    CREATE USER authenticator WITH PASSWORD 'postgres' NOINHERIT;
+    CREATE USER authenticator WITH PASSWORD 'icm1234!@' NOINHERIT;
   END IF;
 
   -- supabase_auth_admin 사용자 생성 (GoTrue/Auth용)
   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'supabase_auth_admin') THEN
-    CREATE USER supabase_auth_admin WITH PASSWORD 'postgres' CREATEDB CREATEROLE;
+    CREATE USER supabase_auth_admin WITH PASSWORD 'icm1234!@' CREATEDB CREATEROLE;
   END IF;
 
   -- supabase_storage_admin 사용자 생성 (Storage용)
   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'supabase_storage_admin') THEN
-    CREATE USER supabase_storage_admin WITH PASSWORD 'postgres';
+    CREATE USER supabase_storage_admin WITH PASSWORD 'icm1234!@';
   END IF;
 
   -- supabase_admin 사용자 생성 (Realtime/Meta용)
   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'supabase_admin') THEN
-    CREATE USER supabase_admin WITH PASSWORD 'postgres' CREATEDB CREATEROLE;
+    CREATE USER supabase_admin WITH PASSWORD 'icm1234!@' CREATEDB CREATEROLE;
   END IF;
 END
 $$;
 
 -- 2. 역할 권한 부여
 GRANT anon, authenticated, service_role TO authenticator;
-GRANT ALL PRIVILEGES ON DATABASE postgres TO supabase_auth_admin;
-GRANT ALL PRIVILEGES ON DATABASE postgres TO supabase_storage_admin;
-GRANT ALL PRIVILEGES ON DATABASE postgres TO supabase_admin;
+GRANT ALL PRIVILEGES ON DATABASE icm_db TO supabase_auth_admin;
+GRANT ALL PRIVILEGES ON DATABASE icm_db TO supabase_storage_admin;
+GRANT ALL PRIVILEGES ON DATABASE icm_db TO supabase_admin;
 
 -- 3. 스키마 권한 설정
 GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
