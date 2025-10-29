@@ -36,7 +36,6 @@ services:
     volumes:
       - supabase-db-data:/var/lib/postgresql/data
       - ./supabase/migrations:/docker-entrypoint-initdb.d
-      - ./pg_hba.conf:/tmp/pg_hba.conf
     networks:
       - icm-network
     restart: unless-stopped
