@@ -27,8 +27,8 @@ RUN npm run build
 # Stage 2: Production with Nginx
 FROM nginx:alpine
 
-# Nginx 설정 파일 복사
-COPY nginx-reverse-proxy.conf /etc/nginx/conf.d/default.conf
+# Nginx 설정 파일 복사 (Docker 컨테이너용 - SSL 없음)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # 빌드된 파일 복사
 COPY --from=builder /app/dist /usr/share/nginx/html
