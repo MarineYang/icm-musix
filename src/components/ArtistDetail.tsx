@@ -107,7 +107,7 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
               {artist.images.map((image, index) => (
                 <motion.div
                   key={index}
-                  className="absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center justify-center"
+                  className="absolute inset-0"
                   initial={{ opacity: 0 }}
                   animate={{ 
                     opacity: index === currentImageIndex ? 1 : 0,
@@ -115,10 +115,23 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
                   }}
                   transition={{ duration: 0.8 }}
                 >
-                  {/* Placeholder for actual image */}
-                  <span className="text-white text-2xl font-bold opacity-30">
-                    {artist.name} #{index + 1}
-                  </span>
+                  <img
+                    src={image}
+                    alt={`${artist.name} - Image ${index + 1}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 Placeholder 표시
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const parent = target.parentElement;
+                      if (parent && !parent.querySelector('.placeholder')) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'placeholder absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center justify-center';
+                        placeholder.innerHTML = `<span class="text-white text-2xl font-bold opacity-30">${artist.name} #${index + 1}</span>`;
+                        parent.appendChild(placeholder);
+                      }
+                    }}
+                  />
                 </motion.div>
               ))}
             </div>
