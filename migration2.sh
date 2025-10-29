@@ -1,14 +1,6 @@
 docker-compose down -v
-docker volume prune -f
+docker volume rm icm-musix_supabase-db-data icm-musix_supabase-storage-data 2>/dev/null || true
 
-# 환경변수 확인
-cat .env
-
-# 처음부터 시작 (로컬과 동일)
 docker-compose up -d
 
-# 30초 대기
-sleep 30
-
-# 로그 확인
-docker-compose logs --tail=50 supabase-rest
+docker-compose logs --tail=30 supabase-rest
