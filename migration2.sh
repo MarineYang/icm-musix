@@ -13,13 +13,24 @@ docker volume rm icm-musix_supabase-storage-data -f 2>/dev/null || true
 
 # 4. pg_hba.conf 권한 설정
 chmod 644 pg_hba.conf
+chmod +x supabase/migrations/00000000000002_apply_pg_hba.sh
 
 # 5. PostgreSQL 먼저 시작 (마이그레이션 실행)
 echo "🔄 PostgreSQL 시작 중 (마이그레이션 자동 실행)..."
 docker-compose up -d supabase-db
 
-echo "⏳ PostgreSQL 초기화 및 마이그레이션 대기 (20초)..."
-sleep 20
+echo "⏳ PostgreSQL 초기화 및 마이그레이션 대기 (25초)..."
+sleep 25
+
+# 5-1. pg_hba.conf 수동 적용
+echo "🔧 pg_hba.conf 적용 중..."
+docker exec icm-supabase-db bash -c "cp /tmp/pg_hba.conf /var/lib/postgresql/data/pg_hba.conf && chmod 600 /var/lib/postgresql/data/pg_hba.conf && chown postgres:postgres /var/lib/postgresql/data/pg_hba.conf"
+
+# 5-2. PostgreSQL 설정 리로드
+docker exec icm-supabase-db su - postgres -c "pg_ctl reload -D /var/lib/postgresql/data" || true
+
+echo "⏳ 설정 적용 대기 (5초)..."
+sleep 5
 
 # 6. PostgreSQL 로그 확인
 echo "📋 PostgreSQL 마이그레이션 로그:"
