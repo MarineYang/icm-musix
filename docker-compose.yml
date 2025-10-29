@@ -133,6 +133,7 @@ services:
     image: supabase/realtime:v2.25.35
     container_name: icm-supabase-realtime
     environment:
+      APP_NAME: "realtime"
       PORT: 4000
       DB_HOST: supabase-db
       DB_PORT: 5432
@@ -141,6 +142,10 @@ services:
       DB_NAME: icm_db
       DB_AFTER_CONNECT_QUERY: 'SET search_path TO _realtime'
       DB_ENC_KEY: supabaserealtime
+      DB_SSL: "false"
+      FLY_ALLOC_ID: "local"
+      FLY_APP_NAME: "realtime"
+      REGION: "local"
       API_JWT_SECRET: ${JWT_SECRET:-super-secret-jwt-token-with-at-least-32-characters-long}
       SECRET_KEY_BASE: UpNVntn3cDxHJpq99YMc1T1AQgQpc8kfYTuRgBiYa15BLrx8etQoXz3gZv1/u2oq
       ERL_AFLAGS: -proto_dist inet_tcp
