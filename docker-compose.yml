@@ -175,6 +175,8 @@ services:
       GLOBAL_S3_BUCKET: stub
       ENABLE_IMAGE_TRANSFORMATION: "true"
       IMGPROXY_URL: http://supabase-imgproxy:5001
+      # 자동 마이그레이션 비활성화 (PostgreSQL 마이그레이션과 충돌 방지)
+      MIGRATIONS_PATH: /nonexistent
     volumes:
       - supabase-storage-data:/var/lib/storage
     networks:
