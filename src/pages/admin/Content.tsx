@@ -15,6 +15,55 @@ import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog';
 import { Post, Artist, YoutubeVideo, InstagramAccount, SocialLink } from '@/types';
 import { Trash2, Edit, Plus, Search, Instagram, Youtube, Twitter, Facebook, Globe } from 'lucide-react';
 
+// 이미지 리사이징 함수
+const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<File> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        // 비율 유지하면서 리사이징
+        if (width > height) {
+          if (width > maxWidth) {
+            height = height * (maxWidth / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = width * (maxHeight / height);
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const resizedFile = new File([blob], file.name, {
+              type: file.type,
+              lastModified: Date.now(),
+            });
+            resolve(resizedFile);
+          } else {
+            reject(new Error('Canvas to Blob failed'));
+          }
+        }, file.type, 0.9); // 90% 품질
+      };
+      img.onerror = reject;
+    };
+    reader.onerror = reject;
+  });
+};
+
 export default function Content() {
   const [activeTab, setActiveTab] = useState('posts');
 
@@ -653,15 +702,42 @@ export default function Content() {
                                 type="file"
                                 accept="image/*"
                                 className="w-40"
-                                onChange={(e) => {
+                                onChange={async (e) => {
                                   const file = e.target.files?.[0];
                                   if (file) {
-                                    // 실제 환경에서는 서버에 업로드 후 URL을 받아야 합니다
-                                    // 여기서는 임시로 로컬 경로를 표시합니다
-                                    const newImages = [...artistImages];
-                                    newImages[index] = `/workspace/uploads/${file.name}`;
-                                    setArtistImages(newImages);
-                                    toast.info(`파일 선택됨: ${file.name}`);
+                                    toast.info('이미지 업로드 중...');
+                                    
+                                    try {
+                                      // 이미지 리사이징 (최대 1920x1080)
+                                      const resizedFile = await resizeImage(file, 1920, 1080);
+                                      
+                                      // Supabase Storage에 업로드
+                                      const fileExt = file.name.split('.').pop();
+                                      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+                                      const filePath = `artist-images/${fileName}`;
+                                      
+                                      const { data, error } = await supabase.storage
+                                        .from('post-images')
+                                        .upload(filePath, resizedFile, {
+                                          cacheControl: '3600',
+                                          upsert: false
+                                        });
+                                      
+                                      if (error) throw error;
+                                      
+                                      // Public URL 가져오기
+                                      const { data: { publicUrl } } = supabase.storage
+                                        .from('post-images')
+                                        .getPublicUrl(filePath);
+                                      
+                                      const newImages = [...artistImages];
+                                      newImages[index] = publicUrl;
+                                      setArtistImages(newImages);
+                                      toast.success('이미지 업로드 완료!');
+                                    } catch (error) {
+                                      console.error('Upload error:', error);
+                                      toast.error('이미지 업로드 실패');
+                                    }
                                   }
                                 }}
                               />
