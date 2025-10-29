@@ -1,62 +1,57 @@
 cd /work/icm-musix
 
-# 1. Storage 관련 마이그레이션 파일 임시 이동
-mv ./supabase/migrations/20251026000003_1_create_storage_schema.sql ./supabase/
-mv ./supabase/migrations/20251026000004_create_storage_bucket.sql ./supabase/
+# Storage 중지
+docker-compose stop supabase-storage
 
-# 2. 모든 컨테이너 중지 및 볼륨 삭제
-docker-compose down -v
-
-# 3. Storage 없이 먼저 시작
-docker-compose up -d supabase-db supabase-auth supabase-rest supabase-kong supabase-meta supabase-studio supabase-realtime frontend
-
-# 4. 30초 대기
-sleep 30
-
-# 5. 수동으로 Storage 스키마 생성
+# 테이블 소유자 변경
 docker exec -i icm-supabase-db psql -U postgres -d icm_db <<'EOSQL'
--- Storage 테이블 생성
-CREATE TABLE IF NOT EXISTS storage.buckets (
-    id text PRIMARY KEY,
-    name text NOT NULL UNIQUE,
-    owner uuid,
-    created_at timestamptz DEFAULT now(),
-    updated_at timestamptz DEFAULT now(),
-    public boolean DEFAULT false,
-    avif_autodetection boolean DEFAULT false,
-    file_size_limit bigint,
-    allowed_mime_types text[]
-);
+-- Storage 스키마 소유자 변경
+ALTER SCHEMA storage OWNER TO supabase_storage_admin;
 
-CREATE TABLE IF NOT EXISTS storage.objects (
-    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    bucket_id text REFERENCES storage.buckets(id),
-    name text NOT NULL,
-    owner uuid,
-    created_at timestamptz DEFAULT now(),
-    updated_at timestamptz DEFAULT now(),
-    last_accessed_at timestamptz DEFAULT now(),
-    metadata jsonb,
-    version text,
-    UNIQUE(bucket_id, name)
-);
+-- 테이블 소유자 변경
+ALTER TABLE storage.buckets OWNER TO supabase_storage_admin;
+ALTER TABLE storage.objects OWNER TO supabase_storage_admin;
 
--- 인덱스
-CREATE INDEX IF NOT EXISTS idx_objects_bucket_id ON storage.objects(bucket_id);
+-- 시퀀스 소유자 변경 (있다면)
+DO $$
+DECLARE
+    r RECORD;
+BEGIN
+    FOR r IN SELECT schemaname, sequencename 
+             FROM pg_sequences 
+             WHERE schemaname = 'storage'
+    LOOP
+        EXECUTE 'ALTER SEQUENCE storage.' || quote_ident(r.sequencename) || 
+                ' OWNER TO supabase_storage_admin';
+    END LOOP;
+END $$;
 
--- 권한
-GRANT ALL ON storage.buckets TO supabase_storage_admin;
-GRANT ALL ON storage.objects TO supabase_storage_admin;
+-- 함수 소유자 변경 (있다면)
+DO $$
+DECLARE
+    r RECORD;
+BEGIN
+    FOR r IN SELECT proname, oidvectortypes(proargtypes) as args
+             FROM pg_proc p
+             JOIN pg_namespace n ON p.pronamespace = n.oid
+             WHERE n.nspname = 'storage'
+    LOOP
+        EXECUTE 'ALTER FUNCTION storage.' || quote_ident(r.proname) || 
+                '(' || r.args || ') OWNER TO supabase_storage_admin';
+    END LOOP;
+END $$;
 
--- RLS
-ALTER TABLE storage.buckets ENABLE ROW LEVEL SECURITY;
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+-- 확인
+\dt storage.*
 
-\echo '✅ Storage 스키마 생성 완료'
+\echo '✅ Storage 소유자 변경 완료!'
 EOSQL
 
-# 6. Storage 시작
-docker-compose up -d supabase-storage supabase-imgproxy
+# Storage 재시작
+docker-compose up -d supabase-storage
 
-# 7. 로그 확인
-docker-compose logs -f supabase-storage
+# 로그 확인 (20초)
+timeout 20 docker-compose logs -f supabase-storage || true
+
+# 상태 확인
+docker-compose ps | grep storage
