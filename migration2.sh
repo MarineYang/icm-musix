@@ -1,15 +1,12 @@
-docker-compose build --no-cache \
-  --build-arg VITE_SUPABASE_URL=https://welcome2icm.com/supabase \
-  --build-arg VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0 \
-  frontend
 
-docker-compose up -d frontend
+# 1. PostgreSQL에서 authenticator 사용자 비밀번호 재설정
+docker exec -it icm-supabase-db psql -U postgres -d icm_db -c "ALTER USER authenticator WITH PASSWORD 'icm1234!@';"
 
-# 빌드 완료 후 확인
-docker exec icm-musix-frontend sh -c "cat /usr/share/nginx/html/assets/*.js" | grep -o 'welcome2icm.com/supabase' | head -1
+# 2. 연결 테스트
+docker exec -it icm-supabase-db psql -U authenticator -d icm_db -c "SELECT 1;"
 
-# API Key 확인
-docker exec icm-musix-frontend sh -c "cat /usr/share/nginx/html/assets/*.js" | grep -o 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' | head -1
+# 3. PostgREST 재시작
+docker-compose restart supabase-rest
 
-curl -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0" \
-  https://welcome2icm.com/supabase/rest/v1/artists
+# 4. 로그 확인 (에러가 사라져야 함)
+docker-compose logs -f supabase-rest
