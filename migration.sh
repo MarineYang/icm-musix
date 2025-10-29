@@ -2,7 +2,6 @@
 
 echo "=== ICM Musix Storage Migration Script ==="
 
-cd /work/icm-musix || exit 1
 
 # 1. 모든 컨테이너 중지
 echo "[1/6] Stopping all containers..."
