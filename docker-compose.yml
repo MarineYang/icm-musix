@@ -159,7 +159,7 @@ services:
 
   # Supabase Storage
   supabase-storage:
-    image: supabase/storage-api:v0.43.11
+    image: supabase/storage-api:v0.40.4
     container_name: icm-supabase-storage
     environment:
       ANON_KEY: ${SUPABASE_ANON_KEY}
@@ -175,8 +175,8 @@ services:
       GLOBAL_S3_BUCKET: stub
       ENABLE_IMAGE_TRANSFORMATION: "true"
       IMGPROXY_URL: http://supabase-imgproxy:5001
-      # 자동 마이그레이션 비활성화 (PostgreSQL 마이그레이션과 충돌 방지)
-      MIGRATIONS_PATH: /nonexistent
+      # 마이그레이션 완전 비활성화
+      POSTGREST_MIGRATIONS: "false"
     volumes:
       - supabase-storage-data:/var/lib/storage
     networks:
