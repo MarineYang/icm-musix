@@ -1,13 +1,8 @@
-# 서버에서 실행
-docker exec -i icm-supabase-db psql -U postgres -d icm_db <<'EOSQL'
--- 버킷 확인
-SELECT * FROM storage.buckets;
+# 마이그레이션 파일 직접 실행
+docker exec -i icm-supabase-db psql -U postgres -d icm_db < supabase/migrations/20251026000001_create_artists.sql
 
--- 버킷 생성
-INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-VALUES ('post-images', 'post-images', true, 52428800, ARRAY['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
-ON CONFLICT (id) DO UPDATE SET public = true;
+# 테이블 확인
+docker exec -i icm-supabase-db psql -U postgres -d icm_db -c "\dt"
 
--- 확인
-SELECT * FROM storage.buckets;
-EOSQL
+# artist_images 테이블 확인
+docker exec -i icm-supabase-db psql -U postgres -d icm_db -c "\d artist_images"
