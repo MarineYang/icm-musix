@@ -1,81 +1,31 @@
-#!/bin/bash
-set -euo pipefail
+# .env 파일 확인
+cat .env
 
-echo "🚨 경고: 이 스크립트는 Supabase 데이터베이스와 스토리지를 완전히 초기화합니다."
-echo "계속하려면 5초 안에 Ctrl + C 를 누르세요..."
-sleep 5
+# .env 파일이 없거나 JWT_SECRET이 없으면 생성
+cat > .env << 'EOF'
+POSTGRES_PASSWORD=icm1234!!
+JWT_SECRET=your-super-secret-jwt-token-with-at-least-32-characters-long
+JWT_EXPIRY=3600
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$ROOT_DIR"
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
 
-echo "📦 Docker Compose 버전 확인"
-docker-compose version
+VITE_SUPABASE_URL=https://welcome2icm.com/supabase
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
 
-echo "⏹️  모든 컨테이너 중지 및 삭제"
-docker-compose down -v || true
+API_EXTERNAL_URL=http://localhost:54321
+SITE_URL=http://localhost
+SUPABASE_PUBLIC_URL=http://localhost:54321
 
-echo "🗑️  남은 볼륨 정리"
-docker volume rm icm-musix_supabase-db-data icm-musix_supabase-storage-data 2>/dev/null || true
-
-echo "🔄 PostgreSQL부터 기동"
-docker-compose up -d supabase-db
-
-echo "⏳ PostgreSQL 준비 대기..."
-until docker exec icm-supabase-db pg_isready -U postgres >/dev/null 2>&1; do
-  sleep 2
-done
-# 초기화 후 약간 더 대기
-sleep 5
-
-echo "🛠️  pg_hba.conf 를 md5 모드로 재설정"
-docker exec icm-supabase-db bash -c "cat <<'EOF' > /var/lib/postgresql/data/pg_hba.conf
-# TYPE  DATABASE        USER                       ADDRESS              METHOD
-
-# Unix 소켓은 peer 유지
-local   all             all                                             peer
-
-# loopback → md5
-host    all             all                       127.0.0.1/32         md5
-host    all             all                       ::1/128              md5
-
-# Docker 네트워크 전체 md5
-host    all             all                       0.0.0.0/0            md5
-
-# Supabase 필수 계정 명시
-host    icm_db          authenticator             0.0.0.0/0            md5
-host    icm_db          supabase_auth_admin       0.0.0.0/0            md5
-host    icm_db          supabase_storage_admin    0.0.0.0/0            md5
-host    icm_db          supabase_admin            0.0.0.0/0            md5
-host    icm_db          postgres                  0.0.0.0/0            md5
-
-# replication (필요 시)
-host    replication     all                       0.0.0.0/0            md5
-host    replication     all                       ::1/128              md5
+DISABLE_SIGNUP=false
+ENABLE_EMAIL_SIGNUP=true
+ENABLE_EMAIL_AUTOCONFIRM=true
 EOF
-chown postgres:postgres /var/lib/postgresql/data/pg_hba.conf
-chmod 600 /var/lib/postgresql/data/pg_hba.conf
-"
 
-echo "📡 PostgreSQL 설정 리로드"
-docker exec icm-supabase-db su - postgres -c "pg_ctl reload -D /var/lib/postgresql/data"
+# PostgREST와 Auth 재시작 (JWT Secret 적용)
+docker-compose stop supabase-rest supabase-auth supabase-kong
+docker-compose up -d supabase-rest supabase-auth supabase-kong
 
-echo "🚀 나머지 Supabase 서비스 시작"
-docker-compose up -d
-
-echo "⏳ 서비스 안정화 대기 (20초)..."
-sleep 20
-
-echo "📊 컨테이너 상태"
-docker-compose ps
-
-echo "📋 PostgREST 로그"
+# 로그 확인
+sleep 5
 docker-compose logs --tail=20 supabase-rest
-
-echo "🔍 Kong 헬스체크"
-if curl -sSf http://127.0.0.1:54321/ >/dev/null; then
-  echo "✅ Kong 정상 응답"
-else
-  echo "❌ Kong 확인 필요"
-fi
-
-echo "🎉 초기화 완료! 브라우저에서 https://welcome2icm.com 을 Ctrl+Shift+R 로 새로고침하세요."
