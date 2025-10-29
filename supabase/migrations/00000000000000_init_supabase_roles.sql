@@ -22,22 +22,22 @@ BEGIN
 
   -- authenticator 사용자 생성 (PostgREST용)
   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'authenticator') THEN
-    CREATE USER authenticator WITH PASSWORD 'icm1234!@' NOINHERIT;
+    CREATE USER authenticator WITH PASSWORD 'icm1234!!' NOINHERIT;
   END IF;
 
   -- supabase_auth_admin 사용자 생성 (GoTrue/Auth용)
   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'supabase_auth_admin') THEN
-    CREATE USER supabase_auth_admin WITH PASSWORD 'icm1234!@' CREATEDB CREATEROLE;
+    CREATE USER supabase_auth_admin WITH PASSWORD 'icm1234!!' CREATEDB CREATEROLE;
   END IF;
 
   -- supabase_storage_admin 사용자 생성 (Storage용)
   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'supabase_storage_admin') THEN
-    CREATE USER supabase_storage_admin WITH PASSWORD 'icm1234!@';
+    CREATE USER supabase_storage_admin WITH PASSWORD 'icm1234!!';
   END IF;
 
   -- supabase_admin 사용자 생성 (Realtime/Meta용)
   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'supabase_admin') THEN
-    CREATE USER supabase_admin WITH PASSWORD 'icm1234!@' CREATEDB CREATEROLE;
+    CREATE USER supabase_admin WITH PASSWORD 'icm1234!!' CREATEDB CREATEROLE;
   END IF;
 END
 $$;
