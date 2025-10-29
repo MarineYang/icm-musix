@@ -13,10 +13,7 @@ docker-compose up -d
 sleep 30
 docker-compose ps
 
-# 5. Storage가 Up 상태면, 백업한 SQL을 직접 실행
-docker exec -it icm-supabase-db psql -U postgres -d icm_db -f /docker-entrypoint-initdb.d/../20251026000004_create_storage_bucket.sql.backup
-
-# 또는 수동으로 SQL 실행
+# 5. 수동으로 SQL 실행 (Storage 테이블이 생성된 후)
 docker exec -it icm-supabase-db psql -U postgres -d icm_db << 'EOF'
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES (
