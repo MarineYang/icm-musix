@@ -4,3 +4,9 @@ docker-compose build --no-cache \
   frontend
 
 docker-compose up -d frontend
+
+# 빌드 완료 후 확인
+docker exec icm-musix-frontend sh -c "cat /usr/share/nginx/html/assets/*.js" | grep -o 'welcome2icm.com/supabase' | head -1
+
+# API Key 확인
+docker exec icm-musix-frontend sh -c "cat /usr/share/nginx/html/assets/*.js" | grep -o 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' | head -1
