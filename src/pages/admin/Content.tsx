@@ -75,6 +75,8 @@ export default function Content() {
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
 
   // Artists state
+  console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+  console.log('Supabase Anon Key:', import.meta.env.VITE_SUPABASE_ANON_KEY);
   const [artists, setArtists] = useState<Artist[]>([]);
   const [deleteArtistId, setDeleteArtistId] = useState<string | null>(null);
   const [editingArtist, setEditingArtist] = useState<Artist | null>(null);
