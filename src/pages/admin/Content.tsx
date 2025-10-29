@@ -686,39 +686,27 @@ export default function Content() {
                           <div key={index} className="space-y-2">
                             <Label htmlFor={`image_${index}`} className="font-medium">Image {index + 1}</Label>
                             <div className="flex gap-2">
-                              <div className="flex-1 relative">
-                                <Input
-                                  id={`image_${index}`}
-                                  value={
-                                    artistImages[index] && artistImages[index].includes('storage')
-                                      ? `✓ ${artistImages[index].split('/').pop()}`
-                                      : artistImages[index]
-                                  }
-                                  onChange={(e) => {
-                                    const newImages = [...artistImages];
-                                    newImages[index] = e.target.value;
-                                    setArtistImages(newImages);
-                                  }}
-                                  placeholder="URL을 입력하거나 파일을 선택하세요"
-                                  title={artistImages[index]} // 마우스 오버 시 전체 URL 표시
-                                  className={artistImages[index] && artistImages[index].includes('storage') ? 'text-green-600 font-medium' : ''}
-                                  readOnly={artistImages[index] && artistImages[index].includes('storage')}
-                                />
-                                {artistImages[index] && artistImages[index].includes('storage') && (
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    className="absolute right-1 top-1/2 -translate-y-1/2 h-7 px-2 text-xs text-red-600 hover:text-red-700"
-                                    onClick={() => {
+                              <div className="flex-1">
+                                <div className="space-y-1">
+                                  <Input
+                                    id={`image_${index}`}
+                                    value={artistImages[index]}
+                                    onChange={(e) => {
                                       const newImages = [...artistImages];
-                                      newImages[index] = '';
+                                      newImages[index] = e.target.value;
                                       setArtistImages(newImages);
                                     }}
-                                  >
-                                    변경
-                                  </Button>
-                                )}
+                                    placeholder="https://... 또는 파일 선택"
+                                  />
+                                  {artistImages[index] && (
+                                    <p className="text-xs text-gray-500 truncate" title={artistImages[index]}>
+                                      {artistImages[index].includes('storage') 
+                                        ? `✓ Uploaded: ${artistImages[index].split('/').pop()}`
+                                        : `URL: ${artistImages[index]}`
+                                      }
+                                    </p>
+                                  )}
+                                </div>
                               </div>
                               <Input
                                 type="file"
