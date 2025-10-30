@@ -13,37 +13,14 @@ VALUES (
 )
 ON CONFLICT (id) DO NOTHING;
 
--- RLS 활성화
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
-ALTER TABLE storage.buckets ENABLE ROW LEVEL SECURITY;
+-- RLS 비활성화 (완전 개방)
+ALTER TABLE storage.objects DISABLE ROW LEVEL SECURITY;
+ALTER TABLE storage.buckets DISABLE ROW LEVEL SECURITY;
 
--- Storage 버킷 정책: 모두 읽기 가능
-CREATE POLICY IF NOT EXISTS "Bucket public read"
-  ON storage.buckets
-  FOR SELECT
-  USING (true);
+-- Storage 스키마 권한 부여
+GRANT ALL ON ALL TABLES IN SCHEMA storage TO anon, authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA storage TO anon, authenticated, service_role;
 
--- Storage 정책: 모두 읽기 가능
-CREATE POLICY IF NOT EXISTS "Public read access"
-  ON storage.objects
-  FOR SELECT
-  USING (bucket_id = 'post-images');
-
--- Storage 정책: 모두 업로드 가능 (anon, authenticated, service_role)
-CREATE POLICY IF NOT EXISTS "Public upload access"
-  ON storage.objects
-  FOR INSERT
-  WITH CHECK (bucket_id = 'post-images');
-
--- Storage 정책: 모두 업데이트 가능
-CREATE POLICY IF NOT EXISTS "Public update access"
-  ON storage.objects
-  FOR UPDATE
-  USING (bucket_id = 'post-images')
-  WITH CHECK (bucket_id = 'post-images');
-
--- Storage 정책: 모두 삭제 가능
-CREATE POLICY IF NOT EXISTS "Public delete access"
-  ON storage.objects
-  FOR DELETE
-  USING (bucket_id = 'post-images');
+-- 기본 권한 설정
+ALTER DEFAULT PRIVILEGES IN SCHEMA storage GRANT ALL ON TABLES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA storage GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;
