@@ -98,6 +98,10 @@ services:
       TENANT_ID: stub
       REGION: stub
       GLOBAL_S3_BUCKET: stub
+      # RLS 완전 비활성화
+      IS_MULTITENANT: "false"
+      ENABLE_IMAGE_TRANSFORMATION: "false"
+      ENABLE_QUEUE_EVENTS: "false"
     volumes:
       - supabase-storage-data:/var/lib/storage
     networks:
