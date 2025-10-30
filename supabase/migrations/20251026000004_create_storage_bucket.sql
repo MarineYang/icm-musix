@@ -13,31 +13,37 @@ VALUES (
 )
 ON CONFLICT (id) DO NOTHING;
 
--- Storage 정책: 누구나 읽기 가능
+-- RLS 활성화
+ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE storage.buckets ENABLE ROW LEVEL SECURITY;
+
+-- Storage 버킷 정책: 모두 읽기 가능
+CREATE POLICY IF NOT EXISTS "Bucket public read"
+  ON storage.buckets
+  FOR SELECT
+  USING (true);
+
+-- Storage 정책: 모두 읽기 가능
 CREATE POLICY IF NOT EXISTS "Public read access"
   ON storage.objects
   FOR SELECT
-  TO public
   USING (bucket_id = 'post-images');
 
--- Storage 정책: 누구나 업로드 가능
+-- Storage 정책: 모두 업로드 가능 (anon, authenticated, service_role)
 CREATE POLICY IF NOT EXISTS "Public upload access"
   ON storage.objects
   FOR INSERT
-  TO public
   WITH CHECK (bucket_id = 'post-images');
 
--- Storage 정책: 누구나 삭제 가능
-CREATE POLICY IF NOT EXISTS "Public delete access"
-  ON storage.objects
-  FOR DELETE
-  TO public
-  USING (bucket_id = 'post-images');
-
--- Storage 정책: 누구나 업데이트 가능
+-- Storage 정책: 모두 업데이트 가능
 CREATE POLICY IF NOT EXISTS "Public update access"
   ON storage.objects
   FOR UPDATE
-  TO public
   USING (bucket_id = 'post-images')
   WITH CHECK (bucket_id = 'post-images');
+
+-- Storage 정책: 모두 삭제 가능
+CREATE POLICY IF NOT EXISTS "Public delete access"
+  ON storage.objects
+  FOR DELETE
+  USING (bucket_id = 'post-images');
