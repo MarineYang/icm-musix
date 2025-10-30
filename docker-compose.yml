@@ -86,22 +86,24 @@ services:
   supabase-storage:
     image: supabase/storage-api:v1.28.1
     container_name: icm-supabase-storage
+    command: node dist/start/server.js
     environment:
       ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
       SERVICE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
       POSTGREST_URL: http://supabase-rest:3000
       PGRST_JWT_SECRET: "${JWT_SECRET:-super-secret-jwt-token-with-at-least-32-characters-long}"
-      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_PASSWORD:-icm1234!!}@supabase-db:5432/icm_db
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-icm1234!!}@supabase-db:5432/icm_db
+      DB_INSTALL_ROLES: "false"
       FILE_SIZE_LIMIT: 52428800
       STORAGE_BACKEND: file
       FILE_STORAGE_BACKEND_PATH: /var/lib/storage
       TENANT_ID: stub
       REGION: stub
       GLOBAL_S3_BUCKET: stub
-      # RLS 완전 비활성화
       IS_MULTITENANT: "false"
       ENABLE_IMAGE_TRANSFORMATION: "false"
       ENABLE_QUEUE_EVENTS: "false"
+      LOG_LEVEL: debug
     volumes:
       - supabase-storage-data:/var/lib/storage
     networks:
