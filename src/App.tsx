@@ -222,7 +222,11 @@ function AnimatedRoutes() {
 }
 
 const App = () => {
-  const [showLoading, setShowLoading] = useState(true);
+  const [showLoading, setShowLoading] = useState(() => {
+    // Admin 페이지는 로딩 화면 건너뛰기
+    const isAdminPath = window.location.hash.startsWith('#/admin');
+    return !isAdminPath;
+  });
 
   const handleLoadingComplete = () => {
     setShowLoading(false);
