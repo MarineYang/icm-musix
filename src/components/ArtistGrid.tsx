@@ -39,12 +39,20 @@ export default function ArtistGrid({ artists, onSelectArtist }: ArtistGridProps)
             >
               {/* Artist Card */}
               <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-[3/4] mb-6">
-                {/* Image Placeholder */}
-                <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-900 flex items-center justify-center">
-                  <span className="text-white text-4xl font-bold opacity-30">
-                    {artist.name}
-                  </span>
-                </div>
+                {/* Profile Image */}
+                {artist.images && artist.images[0] ? (
+                  <img 
+                    src={`${artist.images[0]}?t=${Date.now()}`}
+                    alt={artist.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-900 flex items-center justify-center">
+                    <span className="text-white text-4xl font-bold opacity-30">
+                      {artist.name}
+                    </span>
+                  </div>
+                )}
                 
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">

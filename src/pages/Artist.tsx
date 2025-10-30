@@ -64,10 +64,16 @@ export default function ArtistPage() {
             .eq('artist_id', artist.id)
             .order('display_order', { ascending: true });
 
+          // profile_image를 첫 번째 이미지로, 나머지 갤러리 이미지 추가
+          const allImages = [
+            artist.profile_image,
+            ...(imagesData || []).map((img: ArtistImage) => img.image_url)
+          ].filter(Boolean) as string[];
+
           return {
             id: artist.id,
             name: artist.name,
-            images: (imagesData || []).map((img: ArtistImage) => img.image_url),
+            images: allImages,
             description: artist.description || '',
             social: {
               youtube: artist.youtube_url || undefined,

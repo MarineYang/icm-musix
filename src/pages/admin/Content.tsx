@@ -890,7 +890,7 @@ export default function Content() {
                       <TableCell className="font-mono text-sm">{artist.id}</TableCell>
                       <TableCell>
                         {artist.profile_image ? (
-                          <img src={artist.profile_image} alt={artist.name} className="w-12 h-12 rounded-full object-cover" />
+                          <img src={`${artist.profile_image}?t=${Date.now()}`} alt={artist.name} className="w-12 h-12 rounded-full object-cover" />
                         ) : (
                           <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
                             <span className="text-gray-400 text-xs">No Image</span>
