@@ -803,19 +803,26 @@ export default function Content() {
                                 </Button>
                               )}
                             </div>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="space-y-2">
                               <div>
-                                <Label htmlFor={`video_url_${index}`} className="text-sm">Video URL</Label>
+                                <Label htmlFor={`video_id_${index}`} className="text-sm">YouTube Video ID</Label>
                                 <Input
-                                  id={`video_url_${index}`}
-                                  value={video.thumbnail_url}
+                                  id={`video_id_${index}`}
+                                  value={video.video_id}
                                   onChange={(e) => {
                                     const newVideos = [...artistVideos];
-                                    newVideos[index].thumbnail_url = e.target.value;
+                                    newVideos[index].video_id = e.target.value;
+                                    // video_id가 입력되면 자동으로 thumbnail_url 생성
+                                    if (e.target.value.trim()) {
+                                      newVideos[index].thumbnail_url = `https://img.youtube.com/vi/${e.target.value}/maxresdefault.jpg`;
+                                    }
                                     setArtistVideos(newVideos);
                                   }}
-                                  placeholder={video.thumbnail_url}
+                                  placeholder="예: 9bZkp7q19f0"
                                 />
+                                <p className="text-xs text-gray-500 mt-1">
+                                  YouTube URL에서 video ID만 입력 (예: youtube.com/watch?v=<strong>9bZkp7q19f0</strong>)
+                                </p>
                               </div>
                               <div>
                                 <Label htmlFor={`video_title_${index}`} className="text-sm">Title</Label>
@@ -827,9 +834,22 @@ export default function Content() {
                                     newVideos[index].title = e.target.value;
                                     setArtistVideos(newVideos);
                                   }}
-                                  placeholder="Video Title"
+                                  placeholder="예: PSY - GANGNAM STYLE M/V"
                                 />
                               </div>
+                              {video.thumbnail_url && (
+                                <div>
+                                  <Label className="text-sm">Preview</Label>
+                                  <img 
+                                    src={video.thumbnail_url} 
+                                    alt="Thumbnail preview" 
+                                    className="w-full h-32 object-cover rounded border mt-1"
+                                    onError={(e) => {
+                                      (e.target as HTMLImageElement).style.display = 'none';
+                                    }}
+                                  />
+                                </div>
+                              )}
                             </div>
                           </div>
                         ))}
