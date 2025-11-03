@@ -82,10 +82,10 @@ export default function AboutICM() {
           
           <div className="space-y-8">
             <div className="space-y-4">
-              <h3 className="text-xl md:text-2xl font-bold text-white">Email</h3>
+              <h3 className="text-xl md:text-2xl font-bold text-white">Business Inquiries</h3>
               <p className="text-lg md:text-xl text-gray-300">
-                <a href="mailto:official@icm-music.com" className="hover:text-white transition-colors">
-                  official@icm-music.com
+                <a href="mailto:weareicmofficial@gmail.com" className="hover:text-white transition-colors">
+                  weareicmofficial@gmail.com
                 </a>
               </p>
             </div>
@@ -93,17 +93,7 @@ export default function AboutICM() {
             <div className="space-y-4">
               <h3 className="text-xl md:text-2xl font-bold text-white">Address</h3>
               <p className="text-lg md:text-xl text-gray-300">
-                서울특별시 강남구 테헤란로 123<br />
-                ICM 빌딩 5층
-              </p>
-            </div>
-            
-            <div className="space-y-4">
-              <h3 className="text-xl md:text-2xl font-bold text-white">Business Inquiries</h3>
-              <p className="text-lg md:text-xl text-gray-300">
-                <a href="mailto:business@icm-music.com" className="hover:text-white transition-colors">
-                  business@icm-music.com
-                </a>
+                서울특별시 서초구 동산로 69
               </p>
             </div>
           </div>
