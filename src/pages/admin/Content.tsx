@@ -834,7 +834,7 @@ export default function Content() {
                                     }
                                     setArtistVideos(newVideos);
                                   }}
-                                  placeholder="예: 9bZkp7q19f0 또는 https://youtube.com/watch?v=9bZkp7q19f0"
+                                  placeholder="예: 9bZkp7q19f0"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">
                                   YouTube URL 전체 또는 Video ID만 입력 가능 (자동으로 ID 추출됨)
