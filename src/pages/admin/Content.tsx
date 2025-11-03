@@ -805,23 +805,39 @@ export default function Content() {
                             </div>
                             <div className="space-y-2">
                               <div>
-                                <Label htmlFor={`video_id_${index}`} className="text-sm">YouTube Video ID</Label>
+                                <Label htmlFor={`video_id_${index}`} className="text-sm">YouTube URL 또는 Video ID</Label>
                                 <Input
                                   id={`video_id_${index}`}
                                   value={video.video_id}
                                   onChange={(e) => {
                                     const newVideos = [...artistVideos];
-                                    newVideos[index].video_id = e.target.value;
+                                    let inputValue = e.target.value.trim();
+                                    
+                                    // YouTube URL에서 Video ID 추출
+                                    let videoId = inputValue;
+                                    
+                                    // 전체 URL 형식 처리
+                                    if (inputValue.includes('youtube.com/watch?v=')) {
+                                      const urlParams = new URLSearchParams(inputValue.split('?')[1]);
+                                      videoId = urlParams.get('v') || inputValue;
+                                    } else if (inputValue.includes('youtu.be/')) {
+                                      videoId = inputValue.split('youtu.be/')[1]?.split('?')[0] || inputValue;
+                                    } else if (inputValue.includes('youtube.com/embed/')) {
+                                      videoId = inputValue.split('youtube.com/embed/')[1]?.split('?')[0] || inputValue;
+                                    }
+                                    
+                                    newVideos[index].video_id = videoId;
+                                    
                                     // video_id가 입력되면 자동으로 thumbnail_url 생성
-                                    if (e.target.value.trim()) {
-                                      newVideos[index].thumbnail_url = `https://img.youtube.com/vi/${e.target.value}/maxresdefault.jpg`;
+                                    if (videoId) {
+                                      newVideos[index].thumbnail_url = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
                                     }
                                     setArtistVideos(newVideos);
                                   }}
-                                  placeholder="예: 9bZkp7q19f0"
+                                  placeholder="예: 9bZkp7q19f0 또는 https://youtube.com/watch?v=9bZkp7q19f0"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">
-                                  YouTube URL에서 video ID만 입력 (예: youtube.com/watch?v=<strong>9bZkp7q19f0</strong>)
+                                  YouTube URL 전체 또는 Video ID만 입력 가능 (자동으로 ID 추출됨)
                                 </p>
                               </div>
                               <div>
