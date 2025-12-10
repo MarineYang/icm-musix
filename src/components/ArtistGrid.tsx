@@ -8,25 +8,25 @@ interface ArtistGridProps {
 
 export default function ArtistGrid({ artists, onSelectArtist }: ArtistGridProps) {
   return (
-    <div className="min-h-screen bg-black text-white px-8 py-20">
+    <div className="min-h-screen bg-black text-white px-4 md:px-8 py-16 md:py-20">
       {/* Header */}
       <motion.div
-        className="text-center mb-16"
+        className="text-center mb-10 md:mb-16"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <h1 className="text-5xl md:text-7xl font-bold tracking-wider">
+        <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-wider">
           OUR ARTISTS
         </h1>
-        <p className="text-xl text-gray-400 mt-4">
+        <p className="text-base md:text-xl text-gray-400 mt-3 md:mt-4">
           만나보세요, 우리의 아티스트들을
         </p>
       </motion.div>
 
       {/* Artist Grid */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-8">
           {artists.map((artist, index) => (
             <motion.div
               key={artist.id}
@@ -38,7 +38,7 @@ export default function ArtistGrid({ artists, onSelectArtist }: ArtistGridProps)
               onClick={() => onSelectArtist(artist)}
             >
               {/* Artist Card */}
-              <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-[3/4] mb-6">
+              <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-[3/4] mb-3 md:mb-6">
                 {/* Profile Image */}
                 {artist.images && artist.images[0] ? (
                   <img 
@@ -68,8 +68,8 @@ export default function ArtistGrid({ artists, onSelectArtist }: ArtistGridProps)
 
               {/* Artist Info */}
               <div className="text-center">
-                <h3 className="text-2xl font-bold mb-2">{artist.name}</h3>
-                <p className="text-gray-400">{artist.description}</p>
+                <h3 className="text-lg md:text-2xl font-bold mb-1 md:mb-2">{artist.name}</h3>
+                <p className="text-sm md:text-base text-gray-400">{artist.description}</p>
               </div>
             </motion.div>
           ))}

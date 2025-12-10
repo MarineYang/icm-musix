@@ -82,25 +82,25 @@ export default function HeroSection() {
       </div>
 
       {/* Video Slider Controls */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="bg-black/60 backdrop-blur-sm rounded-2xl p-4">
-          <div className="flex items-center space-x-4">
+      <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20 w-[calc(100%-2rem)] md:w-auto max-w-[95vw]">
+        <div className="bg-black/60 backdrop-blur-sm rounded-2xl p-3 md:p-4">
+          <div className="flex items-center justify-center space-x-2 md:space-x-4">
             {/* Previous Button */}
             <button
               onClick={prevVideo}
-              className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200"
+              className="p-1.5 md:p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200 flex-shrink-0"
             >
-              <ChevronLeft className="w-6 h-6 text-white" />
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </button>
 
             {/* Video Thumbnails */}
-            <div className="flex space-x-3">
+            <div className="flex space-x-2 md:space-x-3 overflow-x-auto scrollbar-hide">
               {musicVideos.map((video, index) => (
                 <div
                   key={video.id}
-                  className={`relative cursor-pointer transition-all duration-300 ${
-                    index === currentVideo 
-                      ? 'ring-2 ring-red-500 scale-110' 
+                  className={`relative cursor-pointer transition-all duration-300 flex-shrink-0 ${
+                    index === currentVideo
+                      ? 'ring-2 ring-red-500 scale-110'
                       : 'opacity-70 hover:opacity-100'
                   }`}
                   onClick={() => setCurrentVideo(index)}
@@ -108,11 +108,11 @@ export default function HeroSection() {
                   <img
                     src={video.thumbnail_url || `https://img.youtube.com/vi/${video.video_id}/maxresdefault.jpg`}
                     alt={video.title}
-                    className="w-16 h-12 object-cover rounded-lg"
+                    className="w-12 h-9 md:w-16 md:h-12 object-cover rounded-lg"
                   />
                   {index === currentVideo && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                      <div className="w-2 h-2 md:w-3 md:h-3 bg-red-500 rounded-full animate-pulse" />
                     </div>
                   )}
                 </div>
@@ -122,15 +122,15 @@ export default function HeroSection() {
             {/* Next Button */}
             <button
               onClick={nextVideo}
-              className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200"
+              className="p-1.5 md:p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200 flex-shrink-0"
             >
-              <ChevronRight className="w-6 h-6 text-white" />
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </button>
           </div>
 
           {/* Current Video Title */}
-          <div className="text-center mt-3">
-            <p className="text-white text-sm font-medium">
+          <div className="text-center mt-2 md:mt-3">
+            <p className="text-white text-xs md:text-sm font-medium truncate px-2">
               {musicVideos[currentVideo].title}
             </p>
           </div>

@@ -32,9 +32,9 @@ export default function AboutICM() {
         {/* INSPIRE COLOURS MUSIX - 배경 */}
         <motion.h1
           style={{ filter: blurValue, opacity: inspireOpacity, y: inspireY }}
-          className="text-7xl md:text-8xl lg:text-9xl xl:text-[12rem] font-black leading-none"
+          className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[12rem] font-black leading-none px-4"
         >
-          INSPIRE 
+          INSPIRE
           COLOURS <br />
           MUSIX
         </motion.h1>
@@ -42,7 +42,7 @@ export default function AboutICM() {
         {/* ICM - MUSIX 아래에서 시작해서 위로 이동 */}
         <motion.h2
           style={{ y: icmY, opacity: icmFadeOut }}
-          className="absolute text-7xl md:text-8xl lg:text-9xl xl:text-[12rem] font-extrabold z-10"
+          className="absolute text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[12rem] font-extrabold z-10"
         >
           ICM
         </motion.h2>
@@ -50,7 +50,7 @@ export default function AboutICM() {
         {/* 설명 텍스트 */}
         <motion.div
           style={{ opacity: useTransform([descOpacity, descFadeOut], ([desc, fade]) => (desc as number) * (fade as number)), y: descY }}
-          className="absolute max-w-5xl text-lg md:text-xl lg:text-2xl leading-relaxed text-gray-300 z-10 px-4"
+          className="absolute max-w-5xl text-sm sm:text-base md:text-xl lg:text-2xl leading-relaxed text-gray-300 z-10 px-6 md:px-4"
         >
           <p className="mb-6">
             ICM은 "우리가 가진 색(Colours)으로 영감을(Inspire) 주고, 장르나 틀에 갇히지 않는(Musix) 음악을 만든다"는 철학에서 시작되었습니다.
@@ -74,25 +74,25 @@ export default function AboutICM() {
         {/* CONTACT US 섹션 */}
         <motion.div
           style={{ opacity: contactOpacity, y: contactY }}
-          className="absolute max-w-4xl text-center z-10 px-4"
+          className="absolute max-w-4xl text-center z-10 px-6 md:px-4"
         >
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-12">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 md:mb-12">
             CONTACT US
           </h2>
-          
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h3 className="text-xl md:text-2xl font-bold text-white">Business Inquiries</h3>
-              <p className="text-lg md:text-xl text-gray-300">
-                <a href="mailto:weareicmofficial@gmail.com" className="hover:text-white transition-colors">
+
+          <div className="space-y-6 md:space-y-8">
+            <div className="space-y-2 md:space-y-4">
+              <h3 className="text-lg md:text-2xl font-bold text-white">Business Inquiries</h3>
+              <p className="text-base md:text-xl text-gray-300">
+                <a href="mailto:weareicmofficial@gmail.com" className="hover:text-white transition-colors break-all">
                   weareicmofficial@gmail.com
                 </a>
               </p>
             </div>
-            
-            <div className="space-y-4">
-              <h3 className="text-xl md:text-2xl font-bold text-white">Address</h3>
-              <p className="text-lg md:text-xl text-gray-300">
+
+            <div className="space-y-2 md:space-y-4">
+              <h3 className="text-lg md:text-2xl font-bold text-white">Address</h3>
+              <p className="text-base md:text-xl text-gray-300">
                 서울특별시 서초구 동산로 69
               </p>
             </div>

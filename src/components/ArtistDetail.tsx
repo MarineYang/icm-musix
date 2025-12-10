@@ -23,9 +23,26 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
     return () => clearInterval(interval);
   }, [artist.images.length]);
 
-  const videosPerView = 4;
+  // 모바일에서는 2개, 태블릿에서는 3개, 데스크탑에서는 4개
+  const [videosPerView, setVideosPerView] = useState(4);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setVideosPerView(2);
+      } else if (window.innerWidth < 1024) {
+        setVideosPerView(3);
+      } else {
+        setVideosPerView(4);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const maxVideoIndex = artist.videos ? Math.max(0, artist.videos.length - videosPerView) : 0;
-  const showSlider = artist.videos && artist.videos.length > 4;
+  const showSlider = artist.videos && artist.videos.length > videosPerView;
 
   const handlePrevVideo = () => {
     setCurrentVideoIndex((prev) => Math.max(0, prev - 1));
@@ -52,8 +69,8 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
       </div>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center px-8 pt-32 pb-8">
-        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="flex items-center justify-center px-4 md:px-8 pt-24 md:pt-32 pb-8">
+        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           
           {/* Left Side - Artist Info */}
           <motion.div
@@ -63,32 +80,32 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
             transition={{ duration: 0.8 }}
           >
             {/* Artist Description */}
-            <div className="text-4xl md:text-6xl lg:text-7xl font-light italic text-gray-300 leading-tight">
+            <div className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-light italic text-gray-300 leading-tight">
               {artist.description}
             </div>
 
             {/* Artist Name */}
-            <div className="text-6xl md:text-8xl lg:text-9xl font-black text-white">
+            <div className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-white">
               {artist.name}
             </div>
 
             {/* Social Media Icons */}
-            <div className="flex space-x-6">
+            <div className="flex space-x-4 md:space-x-6">
               {Object.entries(artist.social).map(([platform, url]) => {
                 if (!url) return null;
                 const IconComponent = socialIcons[platform as keyof typeof socialIcons];
-                
+
                 return (
                   <motion.a
                     key={platform}
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300"
+                    className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <IconComponent />
+                    <IconComponent className="w-5 h-5 md:w-6 md:h-6" />
                   </motion.a>
                 );
               })}
@@ -156,8 +173,8 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
 
       {/* YouTube Videos Section */}
       {artist.videos && artist.videos.length > 0 && (
-        <div className="w-full bg-black py-8">
-          <div className="max-w-7xl mx-auto px-8">
+        <div className="w-full bg-black py-6 md:py-8">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

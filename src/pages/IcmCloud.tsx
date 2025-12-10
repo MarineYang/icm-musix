@@ -64,24 +64,24 @@ export default function IcmCloud() {
   return (
     <div className="min-h-screen bg-black text-white pt-20">
       {/* Header Section */}
-      <div className="bg-black py-16">
-        <div className="container mx-auto px-8">
-          <motion.h1 
-            className="text-4xl md:text-6xl font-black text-white mb-8"
+      <div className="bg-black py-10 md:py-16">
+        <div className="container mx-auto px-4 md:px-8">
+          <motion.h1
+            className="text-3xl md:text-6xl font-black text-white mb-6 md:mb-8"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             ICM CLOUD
           </motion.h1>
-          
+
           <motion.div
-            className="space-y-4 text-gray-300 max-w-4xl"
+            className="space-y-3 md:space-y-4 text-gray-300 max-w-4xl text-sm md:text-base"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <p className="text-lg">
+            <p className="text-base md:text-lg">
               <strong>◀ICM CLOUD 이용 시 주의사항 안내▶</strong>
             </p>
             <p>
@@ -96,10 +96,10 @@ export default function IcmCloud() {
       </div>
 
       {/* Posts Table */}
-      <div className="container mx-auto px-8 py-8">
+      <div className="container mx-auto px-4 md:px-8 py-8">
         <div className="bg-black border-t border-gray-700">
-          {/* Table Header */}
-          <div className="grid grid-cols-12 gap-4 p-4 bg-black text-gray-400 text-sm font-medium border-b border-gray-700">
+          {/* Table Header - Desktop */}
+          <div className="hidden md:grid grid-cols-12 gap-4 p-4 bg-black text-gray-400 text-sm font-medium border-b border-gray-700">
             <div className="col-span-1 text-center">INDEX</div>
             <div className="col-span-5">TITLE</div>
             <div className="col-span-2">NAME</div>
@@ -116,17 +116,30 @@ export default function IcmCloud() {
               {posts.map((post) => (
                 <motion.div
                   key={post.id}
-                  className="grid grid-cols-12 gap-4 p-4 hover:bg-gray-900 transition-colors cursor-pointer"
+                  className="p-4 hover:bg-gray-900 transition-colors cursor-pointer"
                   onClick={() => navigate(`/icm-cloud/post/${post.id}`)}
                 >
-                  <div className="col-span-1 text-center text-gray-400">{post.id}</div>
-                  <div className="col-span-5 text-white">
-                    {post.title}
+                  {/* Desktop View */}
+                  <div className="hidden md:grid grid-cols-12 gap-4">
+                    <div className="col-span-1 text-center text-gray-400">{post.id}</div>
+                    <div className="col-span-5 text-white">{post.title}</div>
+                    <div className="col-span-2 text-gray-400 truncate">{post.author}</div>
+                    <div className="col-span-2 text-gray-400">{formatDate(post.created_at)}</div>
+                    <div className="col-span-1 text-center text-gray-400">{post.view_count}</div>
+                    <div className="col-span-1 text-center text-gray-400">{post.like_count}</div>
                   </div>
-                  <div className="col-span-2 text-gray-400 truncate">{post.author}</div>
-                  <div className="col-span-2 text-gray-400">{formatDate(post.created_at)}</div>
-                  <div className="col-span-1 text-center text-gray-400">{post.view_count}</div>
-                  <div className="col-span-1 text-center text-gray-400">{post.like_count}</div>
+                  {/* Mobile View */}
+                  <div className="md:hidden space-y-2">
+                    <div className="text-white font-medium">{post.title}</div>
+                    <div className="flex items-center justify-between text-sm text-gray-400">
+                      <span>{post.author}</span>
+                      <span>{formatDate(post.created_at)}</span>
+                    </div>
+                    <div className="flex items-center space-x-4 text-xs text-gray-500">
+                      <span>조회 {post.view_count}</span>
+                      <span>좋아요 {post.like_count}</span>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -134,15 +147,15 @@ export default function IcmCloud() {
         </div>
 
         {/* Search and Write Button */}
-        <div className="flex justify-between items-center mt-8">
-          <form onSubmit={handleSearch} className="flex items-center space-x-2">
-            <div className="relative">
+        <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 mt-8">
+          <form onSubmit={handleSearch} className="flex items-center">
+            <div className="relative flex-1 sm:flex-initial">
               <input
                 type="text"
                 placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-gray-800 border border-gray-600 rounded px-4 py-2 pr-10 text-white placeholder-gray-400 focus:outline-none focus:border-white"
+                className="w-full sm:w-auto bg-gray-800 border border-gray-600 rounded px-4 py-2 pr-10 text-white placeholder-gray-400 focus:outline-none focus:border-white"
               />
               <button
                 type="submit"
@@ -155,7 +168,7 @@ export default function IcmCloud() {
 
           <Link
             to="/icm-cloud/write"
-            className="bg-gray-800 hover:bg-gray-700 text-white px-6 py-2 rounded border border-gray-600 transition-colors"
+            className="bg-gray-800 hover:bg-gray-700 text-white px-6 py-2 rounded border border-gray-600 transition-colors text-center"
           >
             글쓰기
           </Link>

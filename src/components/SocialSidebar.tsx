@@ -61,14 +61,14 @@ export default function SocialSidebar() {
   }
 
   return (
-    <div className="fixed right-8 top-1/4 transform -translate-y-1/2 z-40 flex flex-col space-y-4">
+    <div className="fixed right-4 md:right-8 bottom-20 md:bottom-auto md:top-1/4 md:transform md:-translate-y-1/2 z-40 flex flex-row md:flex-col space-x-3 md:space-x-0 md:space-y-4">
       {socialLinks.map((link) => (
         <a
           key={link.id}
           href={link.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300 group"
+          className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300 group bg-black/50 md:bg-transparent"
           title={link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}
         >
           {getIcon(link.platform)}
