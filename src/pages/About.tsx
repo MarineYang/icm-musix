@@ -12,7 +12,7 @@ export default function AboutICM() {
   const blurValue = useTransform(scrollYProgress, [0, 0.1], ["0px", "8px"]);
   const inspireOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0.1]);
   const inspireY = useTransform(scrollYProgress, [0, 0.5], ["0%", "-30%"]);
-  const icmY = useTransform(scrollYProgress, [0, 0.5], ["250%", "-100%"]);
+  const icmY = useTransform(scrollYProgress, [0, 0.5], ["250%", "-150%"]);
   const descOpacity = useTransform(scrollYProgress, [0.3, 0.7], [0, 1]);
   const descY = useTransform(scrollYProgress, [0.3, 0.7], ["100vh", "10vh"]);
   const descFadeOut = useTransform(scrollYProgress, [0.8, 0.9], [1, 0]);
@@ -22,8 +22,8 @@ export default function AboutICM() {
   const contactY = useTransform(scrollYProgress, [0.9, 1], ["100px", "0px"]);
   
   
-  // ICM fade out
-  const icmFadeOut = useTransform(scrollYProgress, [0.8, 0.9], [1, 0]);
+  // ICM fade out - 모바일에서 더 빨리 사라지도록
+  const icmFadeOut = useTransform(scrollYProgress, [0.25, 0.4], [1, 0]);
 
   return (
     <section ref={containerRef} className="relative h-[250vh] bg-black text-white">

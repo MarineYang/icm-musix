@@ -63,8 +63,8 @@ export default function IcmCloudWrite() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center py-8">
-      <div className="container mx-auto px-6 max-w-4xl w-full">
+    <div className="min-h-screen bg-black text-white pt-24 pb-8 md:pt-28">
+      <div className="container mx-auto px-4 md:px-6 max-w-4xl w-full">
         <motion.form
           id="post-form"
           onSubmit={handleSubmit}

@@ -8,7 +8,7 @@ interface ArtistGridProps {
 
 export default function ArtistGrid({ artists, onSelectArtist }: ArtistGridProps) {
   return (
-    <div className="min-h-screen bg-black text-white px-4 md:px-8 py-16 md:py-20">
+    <div className="min-h-screen bg-black text-white px-4 md:px-8 pt-24 pb-16 md:pt-28 md:pb-20">
       {/* Header */}
       <motion.div
         className="text-center mb-10 md:mb-16"

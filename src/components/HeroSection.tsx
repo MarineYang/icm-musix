@@ -6,6 +6,17 @@ export default function HeroSection() {
   const [musicVideos, setMusicVideos] = useState<YoutubeVideo[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentVideo, setCurrentVideo] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 모바일 감지
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Supabase에서 YouTube 비디오 가져오기
   useEffect(() => {
@@ -57,26 +68,32 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-screen overflow-hidden">
       {/* Background Video */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-black">
         <iframe
           src={`https://www.youtube.com/embed/${musicVideos[currentVideo].video_id}?autoplay=1&mute=1&loop=1&playlist=${musicVideos[currentVideo].video_id}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=1`}
-          className="w-full h-full object-cover scale-110"
-          style={{ 
-            minWidth: '100vw', 
+          className="absolute"
+          style={isMobile ? {
+            // 모바일: 세로(쇼츠) 형식 - 화면 꽉 채움
+            width: '100vw',
+            height: '100vh',
+            transform: 'scale(1.8)',
+            pointerEvents: 'none'
+          } : {
+            // 데스크톱: 기존 가로 형식
+            minWidth: '100vw',
             minHeight: '100vh',
             transform: 'scale(1.1)',
             pointerEvents: 'none'
           }}
           allow="autoplay; encrypted-media"
           allowFullScreen
-          frameBorder="0"
         />
-        
+
         {/* Click overlay for YouTube redirect (no visible play button) */}
         <button
           type="button"
           aria-label="Open video on YouTube"
-          className="absolute inset-0 cursor-pointer"
+          className="absolute inset-0 cursor-pointer z-10"
           onClick={goToYouTube}
         />
       </div>
