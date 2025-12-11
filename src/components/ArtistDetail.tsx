@@ -60,65 +60,62 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white relative">
-      {/* Header */}
-      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-10">
-        <h2 className="text-2xl md:text-3xl font-bold text-white tracking-wider">
-          ARTIST INTRODUCTION
-        </h2>
-      </div>
-
+    <div className="min-h-screen bg-black text-white pt-20 md:pt-24">
       {/* Main Content */}
-      <div className="flex items-center justify-center px-4 md:px-8 pt-24 md:pt-32 pb-8">
-        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-          
-          {/* Left Side - Artist Info */}
-          <motion.div
-            className="space-y-8"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Artist Description */}
-            <div className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-light italic text-gray-300 leading-tight">
-              {artist.description}
-            </div>
+      <div className="px-4 md:px-8 pb-6">
+        <div className="max-w-7xl mx-auto">
+          {/* 모바일: 세로 레이아웃, 데스크톱: 가로 레이아웃 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-start">
 
-            {/* Artist Name */}
-            <div className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-white">
-              {artist.name}
-            </div>
+            {/* Left Side - Artist Info (모바일에서는 위에) */}
+            <motion.div
+              className="space-y-4 md:space-y-8 order-1"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              {/* Artist Description */}
+              {artist.description && (
+                <div className="text-lg sm:text-2xl md:text-4xl lg:text-5xl font-light italic text-gray-300 leading-tight">
+                  {artist.description}
+                </div>
+              )}
 
-            {/* Social Media Icons */}
-            <div className="flex space-x-4 md:space-x-6">
-              {Object.entries(artist.social).map(([platform, url]) => {
-                if (!url) return null;
-                const IconComponent = socialIcons[platform as keyof typeof socialIcons];
+              {/* Artist Name */}
+              <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white">
+                {artist.name}
+              </div>
 
-                return (
-                  <motion.a
-                    key={platform}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <IconComponent className="w-5 h-5 md:w-6 md:h-6" />
-                  </motion.a>
-                );
-              })}
-            </div>
-          </motion.div>
+              {/* Social Media Icons */}
+              <div className="flex space-x-3 md:space-x-6">
+                {Object.entries(artist.social).map(([platform, url]) => {
+                  if (!url) return null;
+                  const IconComponent = socialIcons[platform as keyof typeof socialIcons];
 
-          {/* Right Side - Image Slider */}
-          <motion.div
-            className="relative aspect-[4/5] bg-gray-800 rounded-lg overflow-hidden"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
+                  return (
+                    <motion.a
+                      key={platform}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <IconComponent className="w-5 h-5 md:w-6 md:h-6" />
+                    </motion.a>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            {/* Right Side - Image Slider */}
+            <motion.div
+              className="relative aspect-[4/5] md:aspect-[4/5] bg-gray-800 rounded-lg overflow-hidden order-2"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
             {/* Image Container */}
             <div className="relative w-full h-full">
               {artist.images.map((image, index) => (
@@ -168,6 +165,7 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
               ))}
             </div>
           </motion.div>
+          </div>
         </div>
       </div>
 
@@ -243,10 +241,10 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
       )}
       
       {/* Back to List Button */}
-      <div className="w-full flex justify-center py-8">
+      <div className="w-full flex justify-center py-6 md:py-8 pb-24 md:pb-8">
         <motion.button
           onClick={onClose}
-          className="px-8 py-3 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 font-medium tracking-wider"
+          className="px-6 py-2.5 md:px-8 md:py-3 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 font-medium tracking-wider text-sm md:text-base"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
