@@ -117,7 +117,7 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
 
             {/* Right Side - Image Slider */}
             <motion.div
-              className="relative w-full aspect-square sm:aspect-[4/5] md:aspect-[3/4] bg-gray-800 rounded-lg overflow-hidden order-2"
+              className="relative w-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] aspect-square sm:aspect-[4/5] md:aspect-[3/4] bg-gray-800 rounded-lg overflow-hidden order-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
