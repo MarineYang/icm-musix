@@ -68,7 +68,7 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
   return (
     <div className="bg-black text-white min-h-[100dvh]">
       {/* Main Content */}
-      <div className="px-4 sm:px-6 md:px-8 pt-16 sm:pt-20 md:pt-24 pb-4 sm:pb-6">
+      <div className="px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-4 sm:pb-6">
         <div className="max-w-7xl mx-auto">
           {/* 반응형 그리드: 모바일 1열, 태블릿/데스크톱 2열 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-12 items-start">
@@ -117,49 +117,41 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
 
             {/* Right Side - Image Slider */}
             <motion.div
-              className="relative w-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] aspect-square sm:aspect-[4/5] md:aspect-[3/4] bg-gray-800 rounded-lg overflow-hidden order-2"
+              className="relative w-full bg-gray-800 rounded-lg overflow-hidden order-2"
+              style={{ paddingBottom: '125%' }} /* 4:5 비율 유지 */
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               {/* Image Container */}
-              <div className="relative w-full h-full">
-                {hasImages ? (
-                  artist.images.map((image, index) => (
-                    <motion.div
-                      key={index}
-                      className="absolute inset-0"
-                      initial={{ opacity: 0 }}
-                      animate={{
-                        opacity: index === currentImageIndex ? 1 : 0,
-                        scale: index === currentImageIndex ? 1 : 1.05
+              {hasImages ? (
+                artist.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className="absolute inset-0"
+                    style={{
+                      opacity: index === currentImageIndex ? 1 : 0,
+                      transition: 'opacity 0.6s ease-in-out'
+                    }}
+                  >
+                    <img
+                      src={image}
+                      alt={`${artist.name} - Image ${index + 1}`}
+                      className="w-full h-full object-cover"
+                      loading="eager"
+                      onError={(e) => {
+                        console.error('Image load error:', image);
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://placehold.co/600x800/1f2937/6b7280?text=${encodeURIComponent(artist.name)}`;
                       }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      <img
-                        src={image}
-                        alt={`${artist.name} - Image ${index + 1}`}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          const parent = target.parentElement;
-                          if (parent && !parent.querySelector('.placeholder')) {
-                            const placeholder = document.createElement('div');
-                            placeholder.className = 'placeholder absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center justify-center';
-                            placeholder.innerHTML = `<span class="text-white text-xl font-bold opacity-30">${artist.name}</span>`;
-                            parent.appendChild(placeholder);
-                          }
-                        }}
-                      />
-                    </motion.div>
-                  ))
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center justify-center">
-                    <span className="text-white text-xl font-bold opacity-30">{artist.name}</span>
+                    />
                   </div>
-                )}
-              </div>
+                ))
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center justify-center">
+                  <span className="text-white text-xl font-bold opacity-30">{artist.name}</span>
+                </div>
+              )}
 
               {/* Slide Indicators */}
               {hasImages && artist.images.length > 1 && (
