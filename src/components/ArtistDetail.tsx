@@ -66,29 +66,29 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
   };
 
   return (
-    <div className="bg-black text-white min-h-[100dvh]">
+    <div className="bg-black text-white min-h-[100dvh] overflow-x-hidden">
       {/* Main Content */}
-      <div className="px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-4 sm:pb-6">
+      <div className="px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 md:pt-28 pb-2 sm:pb-4">
         <div className="max-w-7xl mx-auto">
           {/* 반응형 그리드: 모바일 1열, 태블릿/데스크톱 2열 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 md:gap-8 lg:gap-12 items-start">
 
             {/* Left Side - Artist Info */}
             <motion.div
-              className="space-y-2 sm:space-y-3 md:space-y-6 order-1"
+              className="space-y-1 sm:space-y-3 md:space-y-6 order-1"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
               {/* Artist Description */}
               {artist.description && (
-                <div className="text-sm sm:text-base md:text-2xl lg:text-3xl xl:text-4xl font-light italic text-gray-300 leading-snug">
+                <div className="text-xs sm:text-base md:text-2xl lg:text-3xl xl:text-4xl font-light italic text-gray-300 leading-snug">
                   {artist.description}
                 </div>
               )}
 
               {/* Artist Name */}
-              <div className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-tight">
+              <div className="text-lg sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-tight">
                 {artist.name}
               </div>
 
@@ -104,7 +104,7 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300"
+                      className="w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -117,8 +117,7 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
 
             {/* Right Side - Image Slider */}
             <motion.div
-              className="relative w-full bg-gray-800 rounded-lg overflow-hidden order-2"
-              style={{ paddingBottom: '125%' }} /* 4:5 비율 유지 */
+              className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-auto lg:aspect-[4/5] bg-gray-800 rounded-lg overflow-hidden order-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -246,10 +245,10 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
       )}
 
       {/* Back to List Button */}
-      <div className="w-full flex justify-center py-4 sm:py-6 md:py-8 pb-24 sm:pb-28 md:pb-8">
+      <div className="w-full flex justify-center py-3 sm:py-6 md:py-8 pb-4 sm:pb-6 md:pb-8">
         <motion.button
           onClick={onClose}
-          className="px-5 py-2 sm:px-6 sm:py-2.5 md:px-8 md:py-3 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 font-medium tracking-wider text-xs sm:text-sm md:text-base"
+          className="px-4 py-1.5 sm:px-6 sm:py-2.5 md:px-8 md:py-3 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 font-medium tracking-wider text-xs sm:text-sm md:text-base"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
