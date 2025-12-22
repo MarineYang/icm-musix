@@ -12,6 +12,7 @@ import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import Sidebar from '@/components/admin/Sidebar';
 import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog';
+import RichTextEditor from '@/components/RichTextEditor';
 import { Post, Artist, YoutubeVideo, InstagramAccount, SocialLink, Notice } from '@/types';
 import { Trash2, Edit, Plus, Search, Instagram, Youtube, Twitter, Facebook, Globe, Pin } from 'lucide-react';
 
@@ -105,6 +106,7 @@ export default function Content() {
   const [deleteNoticeId, setDeleteNoticeId] = useState<number | null>(null);
   const [editingNotice, setEditingNotice] = useState<Notice | null>(null);
   const [isNoticeDialogOpen, setIsNoticeDialogOpen] = useState(false);
+  const [noticeContent, setNoticeContent] = useState('');
 
   useEffect(() => {
     loadPosts();
@@ -481,10 +483,15 @@ export default function Content() {
     const formData = new FormData(e.currentTarget);
     const noticeData = {
       title: formData.get('title') as string,
-      content: formData.get('content') as string,
+      content: noticeContent,
       is_pinned: formData.get('is_pinned') === 'on',
       is_active: formData.get('is_active') === 'on',
     };
+
+    if (!noticeData.title || !noticeContent) {
+      toast.error('제목과 내용을 입력해주세요');
+      return;
+    }
 
     if (editingNotice) {
       const { error } = await supabase.from('notices').update(noticeData).eq('id', editingNotice.id);
@@ -504,6 +511,7 @@ export default function Content() {
 
     setIsNoticeDialogOpen(false);
     setEditingNotice(null);
+    setNoticeContent('');
     loadNotices();
   };
 
@@ -703,14 +711,23 @@ export default function Content() {
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold">공지사항 관리</h2>
-                <Dialog open={isNoticeDialogOpen} onOpenChange={setIsNoticeDialogOpen}>
+                <Dialog open={isNoticeDialogOpen} onOpenChange={(open) => {
+                  setIsNoticeDialogOpen(open);
+                  if (!open) {
+                    setNoticeContent('');
+                    setEditingNotice(null);
+                  }
+                }}>
                   <DialogTrigger asChild>
-                    <Button onClick={() => setEditingNotice(null)}>
+                    <Button onClick={() => {
+                      setEditingNotice(null);
+                      setNoticeContent('');
+                    }}>
                       <Plus className="mr-2 h-4 w-4" />
                       Add Notice
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl">
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle>{editingNotice ? '공지사항 수정' : '새 공지사항 추가'}</DialogTitle>
                     </DialogHeader>
@@ -720,9 +737,14 @@ export default function Content() {
                         <Input id="notice_title" name="title" defaultValue={editingNotice?.title} required />
                       </div>
                       <div>
-                        <Label htmlFor="notice_content">내용 (HTML 지원)</Label>
-                        <Textarea id="notice_content" name="content" defaultValue={editingNotice?.content} rows={10} required />
-                        <p className="text-xs text-gray-500 mt-1">HTML 태그를 사용하여 포맷팅할 수 있습니다. 예: &lt;p&gt;, &lt;br&gt;, &lt;strong&gt;</p>
+                        <Label>내용</Label>
+                        <div className="mt-2">
+                          <RichTextEditor
+                            value={noticeContent}
+                            onChange={setNoticeContent}
+                            placeholder="공지사항 내용을 입력해주세요..."
+                          />
+                        </div>
                       </div>
                       <div className="flex items-center gap-6">
                         <div className="flex items-center gap-2">
@@ -779,6 +801,7 @@ export default function Content() {
                             variant="outline"
                             onClick={() => {
                               setEditingNotice(notice);
+                              setNoticeContent(notice.content || '');
                               setIsNoticeDialogOpen(true);
                             }}
                           >

@@ -13,8 +13,13 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [videosPerView, setVideosPerView] = useState(4);
 
+  // 이미지 배열이 비어있지 않은지 확인
+  const hasImages = artist.images && artist.images.length > 0;
+
   // Auto-slide images every 2 seconds
   useEffect(() => {
+    if (!hasImages) return;
+
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) =>
         prev === artist.images.length - 1 ? 0 : prev + 1
@@ -22,7 +27,7 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [artist.images.length]);
+  }, [artist.images.length, hasImages]);
 
   // 화면 크기에 따라 비디오 개수 조정
   useEffect(() => {
@@ -119,51 +124,59 @@ export default function ArtistDetail({ artist, onClose }: ArtistDetailProps) {
             >
               {/* Image Container */}
               <div className="relative w-full h-full">
-                {artist.images.map((image, index) => (
-                  <motion.div
-                    key={index}
-                    className="absolute inset-0"
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity: index === currentImageIndex ? 1 : 0,
-                      scale: index === currentImageIndex ? 1 : 1.05
-                    }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <img
-                      src={image}
-                      alt={`${artist.name} - Image ${index + 1}`}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        const parent = target.parentElement;
-                        if (parent && !parent.querySelector('.placeholder')) {
-                          const placeholder = document.createElement('div');
-                          placeholder.className = 'placeholder absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center justify-center';
-                          placeholder.innerHTML = `<span class="text-white text-xl font-bold opacity-30">${artist.name}</span>`;
-                          parent.appendChild(placeholder);
-                        }
+                {hasImages ? (
+                  artist.images.map((image, index) => (
+                    <motion.div
+                      key={index}
+                      className="absolute inset-0"
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        opacity: index === currentImageIndex ? 1 : 0,
+                        scale: index === currentImageIndex ? 1 : 1.05
                       }}
-                    />
-                  </motion.div>
-                ))}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <img
+                        src={image}
+                        alt={`${artist.name} - Image ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent && !parent.querySelector('.placeholder')) {
+                            const placeholder = document.createElement('div');
+                            placeholder.className = 'placeholder absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center justify-center';
+                            placeholder.innerHTML = `<span class="text-white text-xl font-bold opacity-30">${artist.name}</span>`;
+                            parent.appendChild(placeholder);
+                          }
+                        }}
+                      />
+                    </motion.div>
+                  ))
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center justify-center">
+                    <span className="text-white text-xl font-bold opacity-30">{artist.name}</span>
+                  </div>
+                )}
               </div>
 
               {/* Slide Indicators */}
-              <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 right-3 sm:right-4 md:right-6 flex space-x-1.5 sm:space-x-2">
-                {artist.images.map((_, index) => (
-                  <button
-                    key={index}
-                    className={`w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
-                      index === currentImageIndex
-                        ? 'bg-white'
-                        : 'bg-white/30 hover:bg-white/50'
-                    }`}
-                    onClick={() => setCurrentImageIndex(index)}
-                  />
-                ))}
-              </div>
+              {hasImages && artist.images.length > 1 && (
+                <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 right-3 sm:right-4 md:right-6 flex space-x-1.5 sm:space-x-2">
+                  {artist.images.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
+                        index === currentImageIndex
+                          ? 'bg-white'
+                          : 'bg-white/30 hover:bg-white/50'
+                      }`}
+                      onClick={() => setCurrentImageIndex(index)}
+                    />
+                  ))}
+                </div>
+              )}
             </motion.div>
           </div>
         </div>
