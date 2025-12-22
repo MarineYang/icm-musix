@@ -12,8 +12,8 @@ import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import Sidebar from '@/components/admin/Sidebar';
 import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog';
-import { Post, Artist, YoutubeVideo, InstagramAccount, SocialLink } from '@/types';
-import { Trash2, Edit, Plus, Search, Instagram, Youtube, Twitter, Facebook, Globe } from 'lucide-react';
+import { Post, Artist, YoutubeVideo, InstagramAccount, SocialLink, Notice } from '@/types';
+import { Trash2, Edit, Plus, Search, Instagram, Youtube, Twitter, Facebook, Globe, Pin } from 'lucide-react';
 
 // 이미지 리사이징 함수
 const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<File> => {
@@ -100,12 +100,19 @@ export default function Content() {
   const [editingSocialLink, setEditingSocialLink] = useState<SocialLink | null>(null);
   const [isSocialLinkDialogOpen, setIsSocialLinkDialogOpen] = useState(false);
 
+  // Notices state
+  const [notices, setNotices] = useState<Notice[]>([]);
+  const [deleteNoticeId, setDeleteNoticeId] = useState<number | null>(null);
+  const [editingNotice, setEditingNotice] = useState<Notice | null>(null);
+  const [isNoticeDialogOpen, setIsNoticeDialogOpen] = useState(false);
+
   useEffect(() => {
     loadPosts();
     loadArtists();
     loadVideos();
     loadInstagram();
     loadSocialLinks();
+    loadNotices();
   }, []);
 
   // Posts functions
@@ -445,6 +452,61 @@ export default function Content() {
 
   const [socialLinkPlatform, setSocialLinkPlatform] = useState<string>('instagram');
 
+  // Notices functions
+  const loadNotices = async () => {
+    const { data, error } = await supabase.from('notices').select('*').order('created_at', { ascending: false });
+    if (error) {
+      toast.error('공지사항 로드 실패');
+      return;
+    }
+    setNotices(data || []);
+  };
+
+  const handleDeleteNotice = async () => {
+    if (!deleteNoticeId) return;
+
+    const { error } = await supabase.from('notices').delete().eq('id', deleteNoticeId);
+    if (error) {
+      toast.error('공지사항 삭제 실패');
+      return;
+    }
+
+    toast.success('공지사항이 삭제되었습니다');
+    setDeleteNoticeId(null);
+    loadNotices();
+  };
+
+  const handleSaveNotice = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const noticeData = {
+      title: formData.get('title') as string,
+      content: formData.get('content') as string,
+      is_pinned: formData.get('is_pinned') === 'on',
+      is_active: formData.get('is_active') === 'on',
+    };
+
+    if (editingNotice) {
+      const { error } = await supabase.from('notices').update(noticeData).eq('id', editingNotice.id);
+      if (error) {
+        toast.error('공지사항 수정 실패');
+        return;
+      }
+      toast.success('공지사항이 수정되었습니다');
+    } else {
+      const { error } = await supabase.from('notices').insert([noticeData]);
+      if (error) {
+        toast.error('공지사항 추가 실패');
+        return;
+      }
+      toast.success('공지사항이 추가되었습니다');
+    }
+
+    setIsNoticeDialogOpen(false);
+    setEditingNotice(null);
+    loadNotices();
+  };
+
   const handleSaveSocialLink = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -528,6 +590,7 @@ export default function Content() {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-6">
             <TabsTrigger value="posts">Posts</TabsTrigger>
+            <TabsTrigger value="notices">Notices</TabsTrigger>
             <TabsTrigger value="artists">Artists</TabsTrigger>
             <TabsTrigger value="videos">Videos</TabsTrigger>
             <TabsTrigger value="instagram">Instagram</TabsTrigger>
@@ -623,6 +686,109 @@ export default function Content() {
                             variant="outline"
                             className="text-red-600 hover:text-red-700"
                             onClick={() => setDeletePostId(post.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
+
+          {/* Notices Tab */}
+          <TabsContent value="notices">
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold">공지사항 관리</h2>
+                <Dialog open={isNoticeDialogOpen} onOpenChange={setIsNoticeDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button onClick={() => setEditingNotice(null)}>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add Notice
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl">
+                    <DialogHeader>
+                      <DialogTitle>{editingNotice ? '공지사항 수정' : '새 공지사항 추가'}</DialogTitle>
+                    </DialogHeader>
+                    <form onSubmit={handleSaveNotice} className="space-y-4">
+                      <div>
+                        <Label htmlFor="notice_title">제목</Label>
+                        <Input id="notice_title" name="title" defaultValue={editingNotice?.title} required />
+                      </div>
+                      <div>
+                        <Label htmlFor="notice_content">내용 (HTML 지원)</Label>
+                        <Textarea id="notice_content" name="content" defaultValue={editingNotice?.content} rows={10} required />
+                        <p className="text-xs text-gray-500 mt-1">HTML 태그를 사용하여 포맷팅할 수 있습니다. 예: &lt;p&gt;, &lt;br&gt;, &lt;strong&gt;</p>
+                      </div>
+                      <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-2">
+                          <Switch id="is_pinned" name="is_pinned" defaultChecked={editingNotice?.is_pinned ?? false} />
+                          <Label htmlFor="is_pinned">상단 고정</Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Switch id="notice_is_active" name="is_active" defaultChecked={editingNotice?.is_active ?? true} />
+                          <Label htmlFor="notice_is_active">활성화</Label>
+                        </div>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button type="button" variant="outline" onClick={() => setIsNoticeDialogOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button type="submit">Save</Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>ID</TableHead>
+                    <TableHead>제목</TableHead>
+                    <TableHead>고정</TableHead>
+                    <TableHead>상태</TableHead>
+                    <TableHead>조회수</TableHead>
+                    <TableHead>작성일</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {notices.map((notice) => (
+                    <TableRow key={notice.id}>
+                      <TableCell>{notice.id}</TableCell>
+                      <TableCell className="font-medium max-w-md truncate">{notice.title}</TableCell>
+                      <TableCell>
+                        {notice.is_pinned && <Pin className="h-4 w-4 text-blue-600" />}
+                      </TableCell>
+                      <TableCell>
+                        <span className={`px-2 py-1 rounded text-xs ${notice.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                          {notice.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                      </TableCell>
+                      <TableCell>{notice.view_count}</TableCell>
+                      <TableCell>{new Date(notice.created_at).toLocaleDateString('ko-KR')}</TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              setEditingNotice(notice);
+                              setIsNoticeDialogOpen(true);
+                            }}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-red-600 hover:text-red-700"
+                            onClick={() => setDeleteNoticeId(notice.id)}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -1326,6 +1492,14 @@ export default function Content() {
           onOpenChange={(open) => !open && setDeleteSocialLinkId(null)}
           onConfirm={handleDeleteSocialLink}
           title="소셜 링크를 삭제하시겠습니까?"
+          description="이 작업은 되돌릴 수 없습니다."
+        />
+
+        <DeleteConfirmDialog
+          open={deleteNoticeId !== null}
+          onOpenChange={(open) => !open && setDeleteNoticeId(null)}
+          onConfirm={handleDeleteNotice}
+          title="공지사항을 삭제하시겠습니까?"
           description="이 작업은 되돌릴 수 없습니다."
         />
       </div>

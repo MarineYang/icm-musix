@@ -93,3 +93,14 @@ export interface SocialLink {
   created_at: string;
   updated_at: string;
 }
+
+export interface Notice {
+  id: number;
+  title: string;
+  content: string;
+  is_pinned: boolean;
+  is_active: boolean;
+  view_count: number;
+  created_at: string;
+  updated_at: string;
+}
