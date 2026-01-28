@@ -84,8 +84,8 @@ export default function AboutICM() {
             <div className="space-y-2 md:space-y-4">
               <h3 className="text-lg md:text-2xl font-bold text-white">Business Inquiries</h3>
               <p className="text-base md:text-xl text-gray-300">
-                <a href="mailto:weareicmofficial@gmail.com" className="hover:text-white transition-colors break-all">
-                  weareicmofficial@gmail.com
+                <a href="mailto:icm@icmstudio.co.kr" className="hover:text-white transition-colors break-all">
+                  icm@icmstudio.co.kr
                 </a>
               </p>
             </div>
